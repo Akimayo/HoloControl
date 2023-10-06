@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Console.Send" xml:space="preserve">
+    <value>Send</value>
+    <comment>Button to send the command</comment>
+  </data>
+  <data name="Console.Title" xml:space="preserve">
+    <value>Console</value>
+    <comment>Title of the Console section</comment>
+  </data>
+  <data name="Controls.Information.Colors" xml:space="preserve">
+    <value>Get Colors</value>
+    <comment>Button to get colors</comment>
+  </data>
+  <data name="Controls.Information.Mode" xml:space="preserve">
+    <value>Get Mode</value>
+    <comment>Button to get current mode</comment>
+  </data>
+  <data name="Controls.Information.Times" xml:space="preserve">
+    <value>Get All Timings</value>
+    <comment>Button to get all timings</comment>
+  </data>
+  <data name="Controls.Information.Title" xml:space="preserve">
+    <value>Information Controls</value>
+    <comment>Title of the Information Controls section</comment>
+  </data>
+  <data name="Controls.Labels.NoOptions" xml:space="preserve">
+    <value>no other options</value>
+    <comment>Label for actions which don't require any other options</comment>
+  </data>
+  <data name="Controls.Manual.Color.B" xml:space="preserve">
+    <value>B</value>
+    <comment>Label for blue checkbox</comment>
+  </data>
+  <data name="Controls.Manual.Color.Ext" xml:space="preserve">
+    <value>Ext</value>
+    <comment>Label for external checkbox</comment>
+  </data>
+  <data name="Controls.Manual.Color.Finishing" xml:space="preserve">
+    <value>Finishing</value>
+    <comment>Label for finishing checkbox</comment>
+  </data>
+  <data name="Controls.Manual.Color.G" xml:space="preserve">
+    <value>G</value>
+    <comment>Label for green checkbox</comment>
+  </data>
+  <data name="Controls.Manual.Color.R" xml:space="preserve">
+    <value>R</value>
+    <comment>Label for red checkbox</comment>
+  </data>
+  <data name="Controls.Manual.Colors" xml:space="preserve">
+    <value>Set Colors</value>
+    <comment>Button to set colors in manual mode</comment>
+  </data>
+  <data name="Controls.Manual.External" xml:space="preserve">
+    <value>Toggle External</value>
+    <comment>Button to toggle external laser</comment>
+  </data>
+  <data name="Controls.Manual.Finishing" xml:space="preserve">
+    <value>Toggle Finishing</value>
+    <comment>Button to toggle finishing LED</comment>
+  </data>
+  <data name="Controls.Manual.Title" xml:space="preserve">
+    <value>Manual Controls</value>
+    <comment>Title of the Manual Controls section</comment>
+  </data>
+  <data name="Controls.Run.Pause" xml:space="preserve">
+    <value>Pause</value>
+    <comment>Button to pause the exposition</comment>
+  </data>
+  <data name="Controls.Run.Start" xml:space="preserve">
+    <value>Start</value>
+    <comment>Button to start the exposition</comment>
+  </data>
+  <data name="Controls.Run.Stop" xml:space="preserve">
+    <value>Stop</value>
+    <comment>Button to stop the exposition</comment>
+  </data>
+  <data name="Controls.Run.Title" xml:space="preserve">
+    <value>Run Controls</value>
+    <comment>Title of the Run Controls section</comment>
+  </data>
+  <data name="Controls.Timing.Blue" xml:space="preserve">
+    <value>Set Blue Timing</value>
+    <comment>Button to set blue laser timing</comment>
+  </data>
+  <data name="Controls.Timing.External" xml:space="preserve">
+    <value>Set External Timing</value>
+    <comment>Button to set external laser timing</comment>
+  </data>
+  <data name="Controls.Timing.Finishing" xml:space="preserve">
+    <value>Set Finishing Time</value>
+    <comment>Button to set finishing time</comment>
+  </data>
+  <data name="Controls.Timing.Green" xml:space="preserve">
+    <value>Set Green Timing</value>
+    <comment>Button to set green laser timing</comment>
+  </data>
+  <data name="Controls.Timing.Red" xml:space="preserve">
+    <value>Set Red Timing</value>
+    <comment>Button to set red laser timing</comment>
+  </data>
+  <data name="Controls.Timing.Reset" xml:space="preserve">
+    <value>Reset All Timings</value>
+    <comment>Button to reset all timings</comment>
+  </data>
+  <data name="Controls.Timing.Time" xml:space="preserve">
+    <value>Exposision Time:</value>
+    <comment>Label for exposition time input, followe by a colon</comment>
+  </data>
+  <data name="Controls.Timing.Title" xml:space="preserve">
+    <value>Timing Controls</value>
+    <comment>Title of the Timing Controls section</comment>
+  </data>
+  <data name="Controls.Timing.Wait" xml:space="preserve">
+    <value>Set Wait Time</value>
+    <comment>Button to set wait time</comment>
+  </data>
+  <data name="Port.Connect" xml:space="preserve">
+    <value>Connect</value>
+    <comment>Button to connect to the port</comment>
+  </data>
+  <data name="Port.Status.Connected" xml:space="preserve">
+    <value>Connected</value>
+    <comment>Label for when the port is connected</comment>
+  </data>
+  <data name="Port.Status.Connecting" xml:space="preserve">
+    <value>Connecting...</value>
+    <comment>Label for when port is connecting, followed by ellipsis</comment>
+  </data>
+  <data name="Port.Status.Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+    <comment>Label for when the port is disconnected</comment>
+  </data>
+  <data name="Port.Status.Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Label for when the port has errored</comment>
+  </data>
+  <data name="Port.Status.Title" xml:space="preserve">
+    <value>Status:</value>
+    <comment>Title of the Port Status section, followed by a colon</comment>
+  </data>
+  <data name="Port.Title" xml:space="preserve">
+    <value>Port</value>
+    <comment>Title of the Port section</comment>
+  </data>
+</root>

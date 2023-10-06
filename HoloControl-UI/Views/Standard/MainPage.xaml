@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HoloControl.ViewModels"
+             xmlns:foldable="clr-namespace:Microsoft.Maui.Controls.Foldable;assembly=Microsoft.Maui.Controls.Foldable"
+             xmlns:loc="clr-namespace:HoloControl.Resources.Strings"
+             xmlns:converters="clr-namespace:HoloControl.Views.Xaml"
+             x:Class="HoloControl.Views.Standard.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ConnectionStatusNameConverter x:Key="ConnectionStatusName" />
+            <converters:ConnectionStatusColorConverter x:Key="ConnectionStatusColor" />
+            <converters:ConnectionStatusBooleanConverter x:Key="ConnectionStatusBoolean" />
+            <converters:BoolNegateConverter x:Key="NegateConverter" />
+            <vm:RootViewModel x:Key="Context" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <foldable:TwoPaneView MinWideModeWidth="1200" BindingContext="{StaticResource Context}">
+        <foldable:TwoPaneView.Pane1>
+            <Grid VerticalOptions="Fill" Padding="8" BackgroundColor="{StaticResource Gray950}" ColumnSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.ColumnSpan="2" BackgroundColor="{StaticResource Gray900}" Margin="-8" Padding="8" ColumnSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="128" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Label">
+                                <Setter Property="VerticalOptions" Value="Center" />
+                                <Setter Property="TextColor" Value="{StaticResource White}" />
+                            </Style>
+                        </ResourceDictionary>
+                    </Grid.Resources>
+                    <Label Text="{x:Static loc:Standard.Port_Title}" Grid.Column="0" />
+                    <Picker ItemsSource="{Binding Connection.AvailablePorts}"
+                            SelectedIndex="{Binding Connection.SelectedPort, Mode=TwoWay}"
+                            Grid.Column="1" TextColor="{StaticResource White}" 
+                            TitleColor="{StaticResource White}" 
+                            BackgroundColor="{StaticResource Gray600}" 
+                            HorizontalOptions="Fill" />
+                    <Button Text="{x:Static loc:Standard.Port_Connect}" Grid.Column="2" Command="{Binding Connect}" />
+                    <Label Text="{x:Static loc:Standard.Port_Status_Title}" Grid.Column="4" />
+                    <HorizontalStackLayout Grid.Column="5" VerticalOptions="Fill">
+                        <Ellipse BackgroundColor="{Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}" 
+                                 WidthRequest="12"
+                                 HeightRequest="12"
+                                 VerticalOptions="Center" />
+                        <Label Text="{Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Grid>
+                <Label Text="{x:Static loc:Standard.Console_Title}" Margin="0,16,0,0" FontSize="Title" TextColor="{StaticResource Gray100}" Grid.Row="1" Grid.ColumnSpan="2" />
+                <Editor IsReadOnly="True"
+                        TextColor="{StaticResource White}"
+                        Text="{Binding History}"
+                        FontFamily="B612 Mono"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        TextChanged="Editor_TextChanged" />
+                <ProgressBar IsEnabled="{Binding Sending}" IsVisible="{Binding Sending}" ProgressColor="{StaticResource Secondary}" Grid.Row="3" Margin="0,4" Grid.ColumnSpan="2" />
+                <Entry FontFamily="B612 Mono"
+                       Placeholder="HEX..." 
+                       TextColor="{StaticResource White}" 
+                       Text="{Binding CurrentCommand, Mode=TwoWay}" 
+                       Grid.Row="4" 
+                       Grid.Column="0"
+                       IsEnabled="{Binding Sending, Converter={StaticResource NegateConverter}}"
+                       ReturnCommand="{Binding Send}" />
+                <ImageButton Source="paper_plane.png"
+                             CornerRadius="6"
+                             IsEnabled="{Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}"
+                             SemanticProperties.Description="{x:Static loc:Standard.Console_Send}" 
+                             BackgroundColor="{StaticResource Secondary}"
+                             Grid.Row="4"
+                             Grid.Column="1"
+                             Command="{Binding Send}" />
+            </Grid>
+        </foldable:TwoPaneView.Pane1>
+        <foldable:TwoPaneView.Pane2>
+            <ScrollView HorizontalOptions="EndAndExpand" Padding="8">
+                <VerticalStackLayout>
+                    <VerticalStackLayout.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Label" Class="Heading">
+                                <Setter Property="Grid.Column" Value="1" />
+                                <Setter Property="Grid.Row" Value="0" />
+                                <Setter Property="Grid.ColumnSpan" Value="3" />
+                                <Setter Property="FontSize" Value="Title" />
+                                <Setter Property="Margin" Value="0,16,0,0" />
+                            </Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Grid.Column" Value="0" />
+                                <Setter Property="Grid.Row" Value="0" />
+                                <Setter Property="HorizontalOptions" Value="Fill" />
+                                <Setter Property="VerticalOptions" Value="End" />
+                            </Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="ColumnSpacing" Value="8" />
+                                <Setter Property="ColumnDefinitions">
+                                    <Setter.Value>
+                                        <ColumnDefinitionCollection>
+                                            <ColumnDefinition Width="36" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="2*" />
+                                        </ColumnDefinitionCollection>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style TargetType="Label" Class="DisabledTextLabel">
+                                <Setter Property="Grid.Column" Value="3" />
+                                <Setter Property="VerticalOptions" Value="Center" />
+                                <Setter Property="TextColor" Value="{StaticResource Gray400}" />
+                            </Style>
+                            <Style TargetType="Label" Class="CodeLabel">
+                                <Setter Property="Grid.Column" Value="2" />
+                                <Setter Property="VerticalOptions" Value="Center" />
+                                <Setter Property="TextColor" Value="{StaticResource Gray100}" />
+                                <Setter Property="BackgroundColor" Value="{StaticResource Gray950}" />
+                                <Setter Property="FontFamily" Value="B612 Mono" />
+                                <Setter Property="Padding" Value="8,4" />
+                            </Style>
+                            <Style TargetType="Label" Class="ResultLabel">
+                                <Setter Property="FontFamily" Value="B612 Mono" />
+                                <Setter Property="Margin" Value="8,0" />
+                                <Setter Property="Padding" Value="4,2" />
+                                <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                            </Style>
+                            <Style TargetType="Label" Class="SpacerLabel">
+                                <Setter Property="Padding" Value="8,2" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="VerticalOptions" Value="Center" />
+                                <Setter Property="Text" Value="=" />
+                                <Setter Property="Margin" Value="0,0,0,4" />
+                            </Style>
+                            <Style TargetType="Button">
+                                <Setter Property="VerticalOptions" Value="Center" />
+                                <Setter Property="Margin" Value="0,4" />
+                                <Setter Property="FontSize" Value="18" />
+                                <Setter Property="Grid.Column" Value="1" />
+                            </Style>
+                            <Style TargetType="HorizontalStackLayout">
+                                <Setter Property="Spacing" Value="4" />
+                            </Style>
+                        </ResourceDictionary>
+                    </VerticalStackLayout.Resources>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <!--#region Information Controls-->
+                        <Image Source="info.png"/>
+                        <Label Text="{x:Static loc:Standard.Controls_Information_Title}" StyleClass="Heading" />
+                        <!--Get mode-->
+                        <Button Text="{x:Static loc:Standard.Controls_Information_Mode}" Grid.Row="1" Command="{Binding SimpleCommand}" CommandParameter="13000000" />
+                        <Label Text="0x13" StyleClass="CodeLabel" Grid.Row="1" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="1" StyleClass="DisabledTextLabel" />
+                        <!--Get colors-->
+                        <Button Text="{x:Static loc:Standard.Controls_Information_Colors}" Grid.Row="2" Command="{Binding SimpleCommand}" CommandParameter="04000000" />
+                        <Label Text="0x04" StyleClass="CodeLabel" Grid.Row="2" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="2" StyleClass="DisabledTextLabel" />
+                        <!--Show all times-->
+                        <Button Text="{x:Static loc:Standard.Controls_Information_Times}" Grid.Row="3" Command="{Binding SimpleCommand}" CommandParameter="14000000" />
+                        <Label Text="0x14" StyleClass="CodeLabel" Grid.Row="3" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="3" StyleClass="DisabledTextLabel" />
+                        <!--#endregion-->
+                    </Grid>
+                    <Grid>
+                        <Grid.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="HorizontalStackLayout">
+                                    <Setter Property="Grid.Column" Value="3" />
+                                    <Setter Property="VerticalOptions" Value="Center" />
+                                </Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="VerticalOptions" Value="Center" />
+                                </Style>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="Margin" Value="0,0,-8,0" />
+                                </Style>
+                            </ResourceDictionary>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <!--#region Manual Controls-->
+                        <Image Source="steering_wheel.png" />
+                        <Label Text="{x:Static loc:Standard.Controls_Manual_Title}" StyleClass="Heading" />
+                        <!--Set colors-->
+                        <Button Text="{x:Static loc:Standard.Controls_Manual_Colors}" Grid.Row="1" Command="{Binding ToggleCommand}" CommandParameter="RGB" />
+                        <Label Text="0x03" StyleClass="CodeLabel" Grid.Row="1" />
+                        <HorizontalStackLayout Grid.Row="1">
+                            <CheckBox Color="Red" IsChecked="{Binding Colors.Red, Mode=TwoWay}" />
+                            <Label Text="{x:Static loc:Standard.Controls_Manual_Color_R}" />
+                            <CheckBox Color="Green" IsChecked="{Binding Colors.Green, Mode=TwoWay}" />
+                            <Label Text="{x:Static loc:Standard.Controls_Manual_Color_G}" />
+                            <CheckBox Color="Blue" IsChecked="{Binding Colors.Blue, Mode=TwoWay}" />
+                            <Label Text="{x:Static loc:Standard.Controls_Manual_Color_B}" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Colors.RGBString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set external-->
+                        <Button Text="{x:Static loc:Standard.Controls_Manual_External}" Grid.Row="2" Command="{Binding ToggleCommand}" CommandParameter="External" />
+                        <Label Text="0x09" StyleClass="CodeLabel" Grid.Row="2" />
+                        <HorizontalStackLayout Grid.Row="2">
+                            <CheckBox Color="Gold" IsChecked="{Binding Colors.External, Mode=TwoWay}" />
+                            <Label Text="{x:Static loc:Standard.Controls_Manual_Color_Ext}" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Colors.ExternalString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set white-->
+                        <Button Text="{x:Static loc:Standard.Controls_Manual_Finishing}" Grid.Row="3" Command="{Binding ToggleCommand}" CommandParameter="Finishing" />
+                        <Label Text="0x05" StyleClass="CodeLabel" Grid.Row="3" />
+                        <HorizontalStackLayout Grid.Row="3">
+                            <CheckBox Color="{StaticResource Blue200Accent}" IsChecked="{Binding Colors.Finishing, Mode=TwoWay}" />
+                            <Label Text="{x:Static loc:Standard.Controls_Manual_Color_Finishing}" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Colors.FinishingString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--#endregion-->
+                    </Grid>
+                    <Grid>
+                        <Grid.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="Entry">
+                                    <Setter Property="Grid.Column" Value="3" />
+                                    <Setter Property="VerticalOptions" Value="Center" />
+                                    <Setter Property="Keyboard" Value="Numeric" />
+                                </Style>
+                                <Style TargetType="HorizontalStackLayout">
+                                    <Setter Property="VerticalOptions" Value="Center" />
+                                    <Setter Property="Grid.Column" Value="3" />
+                                    <Setter Property="Spacing" Value="4" />
+                                </Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="VerticalOptions" Value="Center" />
+                                </Style>
+                            </ResourceDictionary>
+                        </Grid.Resources>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <!--#region Timing Controls-->
+                        <Image Source="timer.png" />
+                        <Label Text="{x:Static loc:Standard.Controls_Timing_Title}" StyleClass="Heading" />
+                        <!--Set wait time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Wait}" Grid.Row="1" Command="{Binding TimingCommand}" CommandParameter="Wait" />
+                        <Label Text="0x17" StyleClass="CodeLabel" Grid.Row="1" />
+                        <HorizontalStackLayout Grid.Row="1">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry Text="{Binding Timings.WaitTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.WaitString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set red time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Red}" Grid.Row="2" Command="{Binding TimingCommand}" CommandParameter="Red" />
+                        <Label Text="0x12" StyleClass="CodeLabel" Grid.Row="2" />
+                        <HorizontalStackLayout Grid.Row="2">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry TextColor="DarkRed" Text="{Binding Timings.RedTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.RedString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set green time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Green}" Grid.Row="3" Command="{Binding TimingCommand}" CommandParameter="Green" />
+                        <Label Text="0x07" StyleClass="CodeLabel" Grid.Row="3" />
+                        <HorizontalStackLayout Grid.Row="3">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry TextColor="DarkGreen" Text="{Binding Timings.GreenTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.GreenString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set blue time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Blue}" Grid.Row="4" Command="{Binding TimingCommand}" CommandParameter="Blue" />
+                        <Label Text="0x02" StyleClass="CodeLabel" Grid.Row="4" />
+                        <HorizontalStackLayout Grid.Row="4">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry TextColor="DarkBlue" Text="{Binding Timings.BlueTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.BlueString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set external time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_External}" Grid.Row="5" Command="{Binding TimingCommand}" CommandParameter="External" />
+                        <Label Text="0x08" StyleClass="CodeLabel" Grid.Row="5" />
+                        <HorizontalStackLayout Grid.Row="5">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry TextColor="DarkGoldenrod" Text="{Binding Timings.ExternalTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.ExternalString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Set finishing time-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Finishing}" Grid.Row="6" Command="{Binding TimingCommand}" CommandParameter="Finishing" />
+                        <Label Text="0x06" StyleClass="CodeLabel" Grid.Row="6" />
+                        <HorizontalStackLayout Grid.Row="6">
+                            <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
+                            <Entry TextColor="{StaticResource Secondary}" Text="{Binding Timings.FinishingTime, Mode=TwoWay}" />
+                            <Label Text="s" />
+                            <Label StyleClass="SpacerLabel" />
+                            <Label Text="{Binding Timings.FinishingString, Mode=OneWay}" StyleClass="ResultLabel" />
+                        </HorizontalStackLayout>
+                        <!--Reset all-->
+                        <Button Text="{x:Static loc:Standard.Controls_Timing_Reset}" Grid.Row="7" Command="{Binding SimpleCommand}" CommandParameter="16000000" />
+                        <Label Text="0x16" StyleClass="CodeLabel" Grid.Row="7" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="7" StyleClass="DisabledTextLabel" />
+                        <!--#endregion-->
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <!--#region Run Controls-->
+                        <Image Source="play_pause.png" />
+                        <Label Text="{x:Static loc:Standard.Controls_Run_Title}" StyleClass="Heading" />
+                        <!--Start-->
+                        <Button Text="{x:Static loc:Standard.Controls_Run_Start}" Grid.Row="1" BackgroundColor="{StaticResource Tertiary}" Command="{Binding SimpleCommand}" CommandParameter="18000000" />
+                        <Label Text="0x18" StyleClass="CodeLabel" Grid.Row="1" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="1" StyleClass="DisabledTextLabel" />
+                        <!--Pause-->
+                        <Button Text="{x:Static loc:Standard.Controls_Run_Pause}" Grid.Row="2" BackgroundColor="{StaticResource Tertiary}" Command="{Binding SimpleCommand}" CommandParameter="19000000" />
+                        <Label Text="0x19" StyleClass="CodeLabel" Grid.Row="2" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="2" StyleClass="DisabledTextLabel" />
+                        <!--Start-->
+                        <Button Text="{x:Static loc:Standard.Controls_Run_Stop}" Grid.Row="3" BackgroundColor="{StaticResource Tertiary}" Command="{Binding SimpleCommand}" CommandParameter="1A000000" />
+                        <Label Text="0x1A" StyleClass="CodeLabel" Grid.Row="3" />
+                        <Label Text="{x:Static loc:Standard.Controls_Labels_NoOptions}" Grid.Row="3" StyleClass="DisabledTextLabel" />
+                        <!--#endregion-->
+                    </Grid>
+                </VerticalStackLayout>
+            </ScrollView>
+        </foldable:TwoPaneView.Pane2>
+    </foldable:TwoPaneView>
+
+</ContentPage>

@@ -1,0 +1,12 @@
+{
+    "cmake.configureOnOpen": true,
+    "cmake.cmakePath": "cmake",
+    "files.associations": {
+        "power_main.h": "c",
+        "power_pins.h": "c",
+        "time.h": "c",
+        "output_status.h": "c",
+        "input_color_switch.h": "c",
+        "output_buzzer.h": "c"
+    }
+}
