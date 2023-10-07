@@ -5,5 +5,5 @@
 
 void set_finishing(void)
 {
-    gpio_put(TRA_FIN_PWR, G_white & 1);
+    gpio_put(TRA_FIN_PWR, !(G_white & 1));
 }
