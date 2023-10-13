@@ -2,6 +2,7 @@
 
 \usepackage{subfigure}
 \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\usepackage{changepage}
 
 \NazevPrace{Chromatická holografie}
 \AutorPrace{Bc.~Michal~Ciesla}
@@ -210,9 +211,10 @@ Nově jsou používány holografické desky výrobce \textbf{LitiHolo} \cite{lit
     \begin{tabular}{|l|r|r|}
         \hline
         \textbf{barva} & \textbf{vlnová délka}\footnotemark[1] $\left[\text{nm}\right]$ & \textbf{expoziční dávka} $\left[\text{mJ.cm}^{-2}\right]$ \\
-        červená        & $635$                                                                                                                             & $20$                                                      \\
-        zelená         & $532$                                                                                                                             & $30$                                                      \\
-        modrá          & $450$                                                                                                                             & $80$                                                      \\
+        \hline
+        červená        & $635$                                                          & $20$                                                      \\
+        zelená         & $532$                                                          & $30$                                                      \\
+        modrá          & $450$                                                          & $80$                                                      \\
         \hline
     \end{tabular}
     \label{tbl:expozicni-davky}
@@ -257,7 +259,19 @@ V reflexním uspořádání je referenční a objektová vlna stejná, resp. ref
 Při exponování hologramů v reflexním uspořádáním nasměrujeme pomocí kombinace půlvlnové destičky (\texttt{4}) veškerou intenzitu do ramene přímo dopadajícího na holografickou desku a uzavřením irisových clonek (\texttt{c}) v druhém rameni odstíníme případné zbytkové světlo. Objekt umístíme na podstavci na plochu (\texttt{11}) tak, aby se pokud možno dotýkal holografické desky -- tím jsou deska a objekt spojeny tak, že vibrují společně, a vibrace tedy nepůsobí problémy s kvalitou hologramu.
 
 \subsection{Transmisní hologramy}
-% TODO: Transmisní hologramy
+Hologramy transmisní vyžadují vyšší stabilitu i expoziční dobu pro vytvoření a k jejich pozorování je nutné laserové světlo ideálně takové, kterým byly vyrobeny. Za tuto cenu ovšem získáme možnost pozorovat reálný obraz \cite{holography}, který můžeme promítnout tak, jak je ukázáno na obrázku \ref{img:transmisni}. Tato projekce se provádí bodovým laserovým světlem, roztažením laserového svazku pak lze měnit velikost obrazu a vzdálenost, ve které se jeví jako ostrý. Tento reálný obraz lze také použít dále pro proces \textit{sekundární holografie}, tedy vytvoření hologramu z hologramu namísto objektu \cite{holography}, neboli kopírování.
+
+U transmisních hologramů je možné pozorovat i virtuální obraz \cite{holography}, a to nejlépe umístěním vyvolané holografické desky zpět do držáku v experimentálním uspořádání. Tím zaručíme stejné osvětlující světlo i úhel a tedy nejvyšší kvalitu hologramu. Zde však laserové světlo musí holografickou deskou projít, a tedy svítí do podobného prostoru, ze kterého je virtuální obraz pozorovatelný. Pozorovatel tak musí být opatrný, aby se nepodíval přímo do laserového svazku, a intenzita referenční vlny použitá pro rekonstrukci tohoto virtuálního obrazu musí být bezpečně nízká.
+
+\medskip
+
+V tomto uspořádání jsou referenční a objektová vlna separátní: Referenční vlna dopadá přímo na holografickou desku, zatímco objektová vlna musí dopadnout na objekt až za deskou a odrazit se na ni od objektu. Referenční a objektová vlna nemají stejnou intenzitu, nejvhodnější (z hlediska kvality hologramu i výpočtu poměru intenzit) je nasměrovat $20\,\%$ intenzity do referenční vlny a $80\,\%$ do objektové vlny \cite{projekt}.
+
+Je možné také objektovou vlnu rozdělit na více a osvětlovat objekt z více úhlů. To pak dává více úhlů, ze kterých lze hologram pozorovat (odpovídají okolí úhlů objektových vln). V našem uspořádání byla objektová vlna rozdělena na dvě, ty byly navíc nastaveny tak, aby každá osvětlovala v trochu jiné hloubce. To by mělo vést k dobré pozorovatelnosti pod více úhly a lepšímu zachycení hloubky objektů.
+
+\medskip
+
+Při exponeování hologramů v transmisním uspořádání za pomoci měřiče intenzity a kombinace půlvlnové destičky (\texttt{4}) nasměrujeme intenzitu laserového světla do větve referenční vlny a větve objektové vlny ve výše uvedeném poměru. Irisové clonky (\texttt{c}) otevřeme tak, aby propouštěly primární svazky, ale stínily různé násobné odrazy a interferenční pole, vzniklé např. na děliči (\texttt{7}). Objekt umístíme na podstavci na plochu (\texttt{11}) tak, aby byl co nejlépe osvětlen objektovou vlnou. Zde není možné, aby se dotýkal holografické desky, transmisní hologramy tedy budou náchylnější na vibrace.
 
 \section{Náměty na zlepšení}
 Uvádíme zde seznam námětů, na které jsme při experimentech narazili a které by bylo do budoucna přínosné zlepšit, ale nebyly nezbytné pro úspěšné sestavení experimentálního uspořádání. Jsou zde uvedeny za účelem postupného vylepšování, naskytne-li se příležitost.
@@ -277,50 +291,208 @@ V laboratoři je k dispozici "`beam combiner,"' který je určen přesně pro ú
 \subsection*{Modrý laser}
 V sekci \ref{sec:usporadani} uvádíme, že modrý laser má nevhodnou vlnovou délku $402{,}1\,\text{nm}$, která nejenže neexponuje holograficou desku dobře, ale navíc na ní ani správně nefungují některé komponenty. Zrcátko (\texttt{2}) a půlvlnová destička (\texttt{4}) z obrázku \ref{img:nove-usporadani-popis} se ukázaly jako obzvláště problematické.
 
-Laser má na svém výstupu intenzitu světla cca. $4{,}6\,\text{mW}$. Po odrazu na zrcátku ale pokračuje dále do uspořádání pouze přibližně $3{,}6\,\text{mW}$ a dále za půlvlnovou destičkou jsme naměřili již jen asi $2{,}6\,\text{mW}$. To je intezita již příliš nízká pro praktické využití, jelikož dle tabulky \ref{tbl:expozicni-davky} má vyžaduje modrá barva nejvyšší expoziční dávku. To vedlo na expoziční dobu kolem $40\,\text{min}$, při které se již ztrácí stabilita laserového výstupu i vibrací aparatury.
+Laser má na svém výstupu intenzitu světla cca. $4{,}6\,\text{mW}$. Po odrazu na zrcátku ale pokračuje dále do uspořádání pouze přibližně $3{,}6\,\text{mW}$ a dále za půlvlnovou destičkou jsme naměřili již jen asi $2{,}6\,\text{mW}$. To je intezita již příliš nízká pro praktické využití, jelikož dle tabulky \ref{tbl:expozicni-davky} vyžaduje modrá barva nejvyšší expoziční dávku. To vedlo na expoziční dobu kolem $40\,\text{min}$, při které se již ztrácí stabilita laserového výstupu i vibrací aparatury.
 
 Při expozici všemi třemi barvami laseru jsme byli schopni pozorovat modré a bílé oblasti hologramu, tedy se modrá složka holografické desky tímto světlem exponovala, nicméně při expozici pouze tímto modrým laserem jsme na desce žádný hologram nenalezli. Pro účely barevené holografie tedy bude postačující nalézt zrcátko a půlvlnovou destičku, které budou fungovat dobře se všemi třemi barvami laserů, aby se snížila expoziční doba, ale obecně by bylo vhodné modrý laser nahradit jiným, který bude mít vlnovou délku bližší $450\,\text{nm}$ doporučeným výrobcem holografických desek.
 
 \subsection*{Držák holografické desky}
 Současný držák holografické desky (\texttt{10}) je vyroben z různých dílů optické "`stavebnice"' a jeví se jako velmi praktický. Disponuje pozicí na umístěhí holografické desky i kalibrační papírové kartičky, jak je vidět na obrázku \ref{img:nove-usporadani} dole.
 
-Pozice pro umístění holografické desky je ale momentálně závislá na elektrikářské lepící pásce, která ačkoli díky své pružnosti velmi dobře drží holografickou desku, její opotřebení je nevyhnutelné. Do budoucna tedy bude muset být páska vyměňována, nebo bude potřeba vytvořit gumové vložky do drážek držáku, které zajistí pevné uchycení desky s trvalejší životností. 
+Pozice pro umístění holografické desky je ale momentálně závislá na elektrikářské lepící pásce, která ačkoli díky své pružnosti velmi dobře drží holografickou desku, její opotřebení je nevyhnutelné. Do budoucna tedy bude muset být páska vyměňována, nebo bude potřeba vytvořit gumové vložky do drážek držáku, které zajistí pevné uchycení desky s trvalejší životností.
 
-\chapter{Elektronická část}
+\chapter{Elektronická část\label{cpt:elektronika}}
 \begin{center}
-    % TODO: Úvod kapitoly
+    Tato kapitula stručně popisuje elektronický obvod a komponenty použité k napájení a řízení laserů a vizuální a akustickou indikaci pro uživatele.
 \end{center}
+\begin{figure}[!ht]
+    \includegraphics[width=\linewidth]{../../HoloControl-PCB/holo-controller-pcb.pdf}
+    \caption{Schéma řídícího elektronického obvodu}
+    \label{img:schema}
+\end{figure}
+
+Elektronický obvod je postaven kolem řídícího mikrokontroleru \textbf{Raspberry Pi Pico}, který digitálními signály na různých svých výstupech zprostředkovává následující funkce:
+\begin{itemize}
+    \item spínání laserů dle nastaveného časování,
+    \item spínání dosvětlovací LED,
+    \item ovládání externího laseru pomocí TTL signálu,
+    \item akustickou indikaci zahájení a dokončení expozice v automatickém režimu a
+    \item světelnoou indikaci právě rozsvícených laserů v manuálním režimu.
+\end{itemize}
+Jako vstupy používá přepínač režimů (manuální nebo automatický), dvojici tlačítek pro fyzickou interakci a USB port pro sériovou komunikaci. Manuální režim slouží pro testování a měření intenzit laserového světla, v automatickém režimu mikrokontroler spíná lasery po nastavené časy (udržuje každý laser rozsvícený po nastavenou dobu, aby bylo dosaženo potřebné expoziční dávky). Další klíčovou rolí elektronického obvodu je udržování konstantního výkonu laserů.
+
+\medskip
+
+Na hlavní desce plošných spojů je umístěn mikrokontroler, moduly pro napájení a spínání laserů (oblast \textit{Lasers} v obrázku \ref{img:schema}, mimo laserových diod) a dosvětlovací LED (oblast \textit{Finishing LED}, mimo samotné LED), BNC konektor pro výstup na externí laser (oblast \textit{TTL}) a piezoelektrický bzučák pro akustickou indikaci. Lasery jsou připojeny pomocí oddělených svorkovnic. Ovládací a indikační prvky a dosvětlovací LED jsou umístěny na vlastních deskách plošných spojů a připojují se odlišenými konektory.
+
 \section{Ovládací panel}
-% TODO: Ovládací panel
+Ovládací panel tvoří fyzickou interakční plochu pro uživatele a jemu příslušející elektronika je umístěna na separátní desce plošných spojů. Na ovládacím panelů se nachází
+\begin{itemize}
+    \item trojice LED v barvách odpovídajících barvám laserů, které v manuálním režimu indikují sepnutí napájení laserů,
+    \item teplá bílá LED, která v manuálním režimu indikuje signál \texttt{HI} na TTL spojení s externím laserem,
+    \item studená bílá LED, která v manuálním režimu indikuje rozsvícení dosvětlovací LED,
+    \item RGB LED, která svou barvou indikuje mauální režim (modře), automatický režim (zeleně) nebo chybový stav (červeně),
+    \item přepínač režimů (manuální nebo automatický),
+    \item tlačítko, které v manuálním režimu cyklicky přepíná mezi lasery a v automatickém režimu spouští, pozastavuje či ukončuje expozici, a
+    \item tlačítko, které v manuálním režimu zapíná a vypíná dosvětlovací LED a v automatickém režimu zhasíná RGB LED.
+\end{itemize}
+Ve schématu na obrázku \ref{img:schema} toto odpovídá oblastem \textit{Status}, \textit{Manual Color Select} a \textit{Mode Select}.
 
 \section{Napájení laserů}
-% TODO: Napájení laserů
+Lasery jsou napájeny digitálně spínanými obvody pro stabilizaci proudu postavenými na napěťových regulátorech \textbf{LM317T}. V oblasti \textit{Lasers} na obrázku \ref{img:schema} jsou umístěny tři paralelní moduly, které při napájení báze tranzistorů \texttt{Q1}-\texttt{Q3} nepouštějí do laserů žádný proud, resp. ne dostatečný pro jejich rozsvícení. Samotné lasery vyznačené ve schématu pak na desce plošných spojů reprezentují oddělené dvoupólové svorkovnice, do kterých se napájecí kabely laserů zapojí.
+
+Obvody pro stabilizaci proudu poskytují stabilní napájení laserů a také reagují na jejich zahřívání. Stabilizace proudu je dobrým kompromisem pro nenáročnou a relativně precizní stabilizaci výstupního výkonu laserů. Díky trimrům \texttt{R1}-\texttt{R3} je také možné pro každý laser nezávisle nastavit protékající proud.
+
+Zapojení modulů pro digitálně spínatelnou stabilizaci proudu je převzato z \cite{system}.
 
 \section{Dosvětlovací LED}
-% TODO: Dosvětlovací LED
+Dosvětlovací LED je napájena obvodem z velké míry totožným s obvodem pro napájení laserů. Jediným rozdílem je zapojení a kapacita kondenzátoru \texttt{C\_I4} (viz obrázek \ref{img:schema}). Tento kondenzátor je zapojen přímo na LED a jeho řádově vyšší kapacita způsobuje pomalé a plynulé zhasínání LED, což je pro zvolený typ LED šetrnější.
+
+Pro dosvětlování byla zvolena tzv. \textit{Superflux LED}, která má na své malé rozměry a nízký proud ohromný světelný tok. Tato LED je umístěna na malé desce plošných spojů společně jen s konektorem, jelikož bude v experimentálním uspořádání umístěna před držákem holografické desky (mezi pozicemi (\texttt{5}) a (\texttt{10}) na obrázku \ref{img:nove-usporadani-popis}) v nakloněné poloze. Minimální počet součástek snižuje náchylnost na poškození při manipulaci.
 
 \section{Externí laser}
-% TODO: Externí laser
+Jelikož očekáváme připojování externího laseru, který je napájen vlastní řídící jednotkou, poskytuje elektronický obvod také výstup ve formě BNC koaxiálního konektoru, na který je přiváděn TTL signál\footnote{Úroveň \texttt{HI} je u \textbf{Raspberry Pi Pico} pouze $3{,}6\,\text{V}$, nikoliv pro TTL typických $5\,\text{V}$, to je nicméně dostatečně nad hranicí mezi \texttt{HI} a \texttt{LO} a signál bude přijímačem interpretován správně.} pro vyžádání zapnutí či vypnutí externího laseru. Řídící jednotky laserů se liší svým ovládáním, typicky ale předpokládáme situaci, že jako stav laseru budou zrcadlit signál na svém TTL vstupu, případně jej invertovat. Pro konkrétní řídící jedmotky je vždy možné pozměnit kód mikrokontroleru, v případě častého střídání řídících jednotek je možné kód mikrokontroleru rozšířit o instrukce pro nastavení typu TTL komunikace.
 
 
+\vfill
+\noindent
+\textit{Kompletní technická dokumentace elektronického obvodu bude zpracována a předána pracovišti po formálním ukončení projektu.}
 \chapter{Softwarová část\label{cpt:software}}
 \begin{center}
-    % TODO: Úvod kapitoly
+    Tato kapitula přehledově vysvětluje ovládání celého systému jak z pohledu mikrokontroleru, tak z pohledu uživatele jak pomocí přímé sériové komunikace, tak pomocí uživatelského grafického rozhraní.
 \end{center}
+
+% TODO: Úvodní odstavce
+
 \section{Řídící mikrokontroler}
-% TODO: Řídící mikrokontroler
+Kód pro mikrokontroler \textbf{Raspberry Pi Pico} byl napsán v jazyce C s pomocí knihoven poskytovaných v rámci \textbf{Raspberry Pi Pico SDK}. Má za úkol zpracovávat vstupy z fyzických ovládacích prvků i sériového/USB portu, zajišťovat akustickou a vizuální indikaci, spínat napájecí obvody laserů a, klíčově, časovat dobu zapnutí jednotlivých laserů.
+
+Mikrokontroler může běžet ve dvou režimech: manuálním a automatickém. Manuální režim slouží pro testování a měření intenzity laserového světla a je detailněji popsán v předchozí kapitole \ref{cpt:elektronika}. Automatický režim slouží pro expozici hologramů po předem definovanou dobu.
 
 \subsection{Časování}
-% TODO: Časování
+Mikrokontroler prochází hlavní programovou smyčkou s uměle sníženou periodou $1\,\text{ms}$, aby tato smyčka byla co nejvíce časově stabilní i při zahřátí nebo stárnutí mikrokontroleru, které mohou lehce změnit základní takt procesoru. To zároveň umožňuje velmi jednoduché měření času expozice v milisekundách, které se změní na prosté počítání cyklů hlacní smyčky.
+
+Milisekundy jsou dostatečně, ba až zbytečně, jemným krokem pro účely holografie, kde se v případě tohoto experimentálního uspořádání pracuje s expozičními dobami v řádu desítek sekund až desítek minut. Pro případy velmi výkonných externích laserů by se však eventuelně milisekundová přesnost mohla hodit.
+
+\medskip
+
+Pomocí sériové komunikace lze mikrokontroleru nastavit
+\begin{itemize}
+    \item dobu čekání před zahájením expozice (čas pro uživatele, aby opustil laboratoř),
+    \item dobu expozice červeným laserem,
+    \item dobu expozice zeleným laserem,
+    \item dobu expozice modrým laserem,
+    \item dobu expozice externím laserem a
+    \item čas, po který bude zapnuta dosvětlovací LED.
+\end{itemize}
+Předpokládá se, že uživatel z naměřeného světelného výkonu laserů a potřebné expoziční dávky v dané oblasti spektra vypočte expoziční dobu ze vzorce \eqref{eqn:expozicni-doba} a na mikrokontroleru ji nastaví. Doba čekání a doba dosvětlování mohou být zvoleny arbitrárně dle potřeby.
+
+Po spuštění expozice, ať už fyzicky tlačítkem nebo počítačově, se spustí odpočet čekání, což je také indikováno akusticky. Po vypršení doby čekání jsou rozsvíceny všechny lasery s nenulovou expoziční dobou, což je opět doprovázeno akustickou signálizací. Program odpočítává cykly hlavní smyčky a jakmile je dosaženo nastavené expoziční doby některého z laserů, je tento laser vypnut. Jakmile je vypnut poslední laser, je dokončení expozice opět oznámeno akusticky a je-li nastavena nenulová doba dosvětlování, je zapnuta dosvětlovací LED. Po dosažení i jejího nastaveného času je zhasnuta a úplné dokončení je doprovozeno posledním zvukovým signálem.
 
 \subsection{Komunikace}
-% TODO: Komunikace
+\textbf{Raspberry Pi Pico} je vybaveno micro-USB portem pro napájení a sériovou komunikaci. Obě funkce tohoto portu využíváme.
+
+Pro nastavování dob expozice a případně také nahrazení interakce s fyzickými tlačítky byl pro komunikaci s mikrokontrolerem navržen primitivní protokol se čtyřbajtovými instrukcemi. Instrukce nejsou člověku srozumitelné a nelze je interpretovat textově, jsou však velmi rychlé na zpracování, což je pro časovou stabilitu hlavní programové smyčky zásádní.
+
+\medskip
+
+Ve zkratce se každá instrukce skládá z příkazu, který je reprezentován prvním bajtem, a dat, pro která jsou určeny zbylé tři bajty. Data mohou být některými příkazy nevyužita, některé příkazy je využívají pro nastavení stavu zapnuto/vypnuto, a příkazy pro nastavení časování je využívájí právě pro nastavení času. Časy se nastavují v milisekundách, pro které 3 bajty, tedy 24 bitů, dávají maximální nastavitelnou dobu expozice/čekání/dosvětlování $2^{24}\,\text{ms}=16\,777\,216\,\text{ms}\approx4{,}7\,\text{h}$. Podrobnější popis instrukcí včetně jejich seznamu se nachází v příloze \ref{cpt:appendix}.
 
 \section{Uživatelské ovládací prostředí}
-% TODO: Uživatelské ovládací prostředí
+Ovládání časování pomocí číselných (resp. šestnáctkových, viz příloha \ref{cpt:appendix}) instrukcí ze sériového terminálu je uživatelsky značně nepřívětivé, obzvláště pak pro případ využití na propagačních akcích. Proto k projektu bylo vytvořeno také grafické uživatelské prostředí ve formě aplikace nazvané \textbf{HoloControl}. To ve standardním režimu slouží jako jednoduchý a intuitivní překladač úmyslů uživatele na instrukce mikrokontroleru.
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{../img/HoloControl-UI.png}
+    \caption{Snímek obrazovky standardního režimu aplikace \textbf{HoloControl}}
+    \label{img:holocontrol}
+\end{figure}
+
+Obrázek \ref{img:holocontrol} ukazuje rozložení standardního režimu grafické aplikace. Levá strana slouží jako prostý terminál, kde v horní části lze ze seznamu připojených sériových portů zvolit ten, ke kterému je mikrokontroler připojený, a připojit se k němu. Dolní část je příkazový řádek, kam se vkládají instrukce v šestnáctkovém zápisu, a uprostřed se nachází záznam veškeré komunikace mezi aplikací a mikrokontrolerem.
+
+Pravá strana pak obsahuje tlačítka pro vložení jednotlivých instrukcí a u instrukcí s argumenty také pole pro nastavení těchto argumentů. Uživatel při používání nastaví argumenty požadované instrukce a klikne na tlačítko této instrukce. Tím se instrukce s argumenty přeloženými do šestnáctkového zápisu vloží do příkazové řádky. Takto může uživatel zadat i několik instrukcí před tím, než je pomocí tlačítka vedle příkazové řádky odešle. Odeslané instrukce i odpověď mikrokontroleru se objeví v záznamu.
+
+\medskip
+
+Aplikace \textbf{HoloControl} byla naprogramována pomocí \textbf{.NET Multi-platform App UI} (\textbf{MAUI}), která umožňuje nasazení stejné aplikace pro systémy Windows, macOS, Android, iOS a Tizen \cite{maui}. Z těchto bylo z dispozičních důvodů využito pouze systémů Windows a Android, což ale stále umožní ovládání z počítačů, laptopů, tabletů i mobilních telefonů.
+
+Aplikaci samozřejmě lze ovládat i dotykem, je dále responzivní vůči velikosti obrazovky i preferovanému světlému/tmavému režimu a je lokalizována do češtiny a angličtiny.
+
+\medskip
+
+V budoucnosti je v plánu aplikaci rozšířit o kioskový režim, ve kterém se již uživatel s instrukcemi vůbec nesetká a veškeré ovládání bude konáno výhradně graficky. Standardní režim byl takto navržen proto, aby studenti mohli nahlédnout a vyzkoušeli si práci s šestnáctkovou soustavou a sériovým terminálem; kioskový režim pak poslouží pro předváděcí účely.
+
+
+\vfill
+\noindent
+\textit{Kompletní softwarová dokumentace bude zpracována a společně se zdrojovými kódy bude předána pracovišti po formálním ukončení projektu.}
 \chapter*{Závěr}
 \addcontentsline{toc}{chapter}{Závěr}
-% TODO: Závěr
+V rámci projektu byla úspěšně přestavěna úloha holografie na moderní barevné holografické desky \textbf{LitiHolo}. Při stavbě nového experimentálního uspořádání jsme rovnou pracovali na sekundárním cíli sestavení experimentu v kompaktní a mobilní podobě - celé experimentální uspořádání je sestaveno na přenosné desce velikosti $30\,\text{cm}\times 60\,\text{cm}$. Úloha lze velmi jednoduše převádět mezi reflexním a transmisním uspořádáním a v reflexním uspořádání lze vytvářet hologramy v plné barvě, bylo tedy dosaženo cíle chromatické holografie.
 
+Chromatická transmisní holografie je v principu též možná, ovšem vzhledem nízkému světelnému výkonu použitých laserů by byly expoziční doby nepřijatelně dlouhé, jak z hlediska času studentů a vyučujících, tak kvůli vibracím, které při delších dobách expozice značně zhoršují kvalitu hologramu. Pro účely transmisní holografie lze do experimentálního uspořádání navést výkonný externí laser, pomocí kterého bude možné vytvořit alespoň monochromatické transmisní hologramy.
+
+K optické části je v této zprávě také uvedeno několik potenciálních zlepšení, které spadají mimo rozsah a možnosti tohoto projektu. Ty poslouží pracovišti jako náměty na příležitostné zlepšení v budoucnu.
+
+\medskip
+
+Všechny lasery (tři barevné interní lasery a případný laser externí) jsou řízené plně elektronicky, a to včetně časování. K experimentu byl vytvořen elektronický obvod řízený mikrokontrolerem, který slouží primárně k přesnému odměření doby expozice jednotlivými barvami laserů. Díky tomu nejsou potřeba zásahy uživatele v průběhu expozice a rizika poškození hologramu, optických prvků, či zranění. Dále byla do uspořádání přidána bílá LED s vysokým světelným tokem pro dosvětlování holografických desek po expozici pro zvýšení kontrastu.
+
+Ovládání mikrokontroleru je možné buďto v omezené míře pomocí fyzických tlačítek a přepínačů, nebo pomocí sériové komunikace. Tu lze realizovat buďto přímo skrze sériový terminál za použití přiložené instrukční sady, nebo pohodlněji pomocí grafické aplikace, která byla k tomuto projektu také vytvořena.
+
+\medskip
+
+Studijní text k úloze po domluvě s vedoucí projektu nebyl v rámci projektu přepracováván, nicméně i po formálním ukončení projektu budeme na přípravě úlohy pracovat dále a zlepšovat některé její aspekty, jako např. vytvoření kioskového režimu grafické aplikace, finalizace elektronického obvodu a vymodelování a výroba krytu na elektroniku, které vzhledem k časové vytíženosti nejsou krátkodobě realizovatelné.
+
+Až po formálním dokončení projektu a finalizaci relevantních částí budou také zpracovány a pracovišti předány technické dokumentace jak k elektronické části, tak softwarové. Též bude předán zdrojový kód, který je k dispozici volně v repozitáři \url{https://github.com/Akimayo/HoloControl}. Technické dokumentace poslouží pro dlouhodobou udržitelnost experimentálního uspořádání, aby v budoucnu bylo možné provádět opravy či modifikace tohoto uspořádání.
+
+\medskip
+
+Primárního cíle projektu, chromatické holografie, bylo tedy dosaženo úspěšně. Společně s tím byl původní záměr doplněn o řadu provozních a technických rozšíření, která dělají experimentálnější uspořádání pohodlnější jak pro účely praktika, tak pro propagační akce a i pro běžný provoz v laboratoři. Nový studijní text k úloze nakonec v rámci projektu zpracován nebyl, nicméně bude vytvořen vedoucí úlohy a případně rozšířen o interaktivní prvky a simulace, které byly zmíněny jako jeden ze sekundárních cílů.
+
+\medskip
+
+Osobně mi projekt přinesl řadu praktických zkušeností v oblasti optiky a patřičný úžas nad kouzlem hologramů. Dále jsem měl mnoho prostoru na využití svých dovedností v oblasti elektroniky a programování, což vedlo na podstatné rozšíření původního záměru, díky kterému ale doufám bude experimentální uspořádání o to kvalitnější a zážitek studentů v praktiku OOEI lepší. Rozsáhlá práce na elektronické části taky přinesla řadu nových zkušeností a poučení do budoucna.
+
+\printbibliography[title=Reference]
+
+\appendix
+\chapter{Protokol pro sériovou komunikaci s mikrokontrolerem\label{cpt:appendix}}
+Pro rychlou referenci přikládáme do zprávy tabulku příkazů pro sériovou komunikaci s mikrokontrolerem.
+
+\medskip
+
+Mikrokontroler reaguje na čtyřbajtové instrukce, kde první bajt udává příkaz a zbylé tři bajty buďto jsou nevyužité, nesou stav zapnutí/vypnutí, nebo nesou počet milisekund. Z prvního bajtu jsou navíc příkazy vybírány pouze podle posledních čtyř bitů, což v kombinaci se zvolenými instrukčními kódy umožňuje jako první bit použít písmeno latinské abecedy. Instrukční kódy jsou zvoleny tak, aby bylo z písmene (prvního bajtu) jednoduše identifikovat příkaz.
+
+V tabulce \ref{tbl:instrukce} jsou uvedeny všechny užitečné instrukce. Jelikož je nejvýhodnější příkazy zadávat pomocí zápisů/čísel v šestnáctkové soustavě, jsou instrukční kódy uváděny též v šestnáctkové soustavě (vypsány jsou vždy pouze kódy reprezentované posledními čtyřmi bity, na ASCII kód písmene lze šestnáctkový zápis převést přičtením $64_{10}=\mathtt{0x40}$). U příkazů, které jako argument přijímají čas v milisekundách, je nutné převést počet milisekund též do šestnáctkové soustavy.
+
+\begin{table}[hp]
+    \begin{adjustwidth}{-6em}{-3em}
+        \caption{Instrukce pro sériovou komunikaci s mikrokontrolerem}
+        \centering
+        \begin{tabular}{|l|c|c|l|}
+            \hline
+            \textbf{Instruction} & \textbf{Code} & \textbf{Hex}           & \textbf{Parameter}                                        \\
+            \hline
+            Start                & \texttt{"x"}  & $\mathtt{0{\times}18}$ & \textit{none}                                             \\
+            Pause                & \texttt{"y"}  & $\mathtt{0{\times}19}$ & \textit{none}                                             \\
+            Stop                 & \texttt{"z"}  & $\mathtt{0{\times}1A}$ & \textit{none}                                             \\
+            Set colors           & \texttt{"c"}  & $\mathtt{0{\times}03}$ & Every non-zero byte turns on its corresponding LED (RGB)  \\
+            Set external         & \texttt{"i"}  & $\mathtt{0{\times}09}$ & Non-zero value turns on external laser                    \\
+            Get colors           & \texttt{"d"}  & $\mathtt{0{\times}04}$ & \textit{none}                                             \\
+            Toggle white         & \texttt{"e"}  & $\mathtt{0{\times}05}$ & Non-zero value turns on finishing white LED               \\
+            Get mode             & \texttt{"s"}  & $\mathtt{0{\times}13}$ & \textit{none}                                             \\
+            Buzz                 & \texttt{"u"}  & $\mathtt{0{\times}15}$ & 3-byte time to buzz for in milliseconds                   \\
+            Set red time         & \texttt{"r"}  & $\mathtt{0{\times}12}$ & 3-byte time of red laser in milliseconds                  \\
+            Set green time       & \texttt{"g"}  & $\mathtt{0{\times}07}$ & 3-byte time of green laser in milliseconds                \\
+            Set blue time        & \texttt{"b"}  & $\mathtt{0{\times}02}$ & 3-byte time of blue laser in milliseconds                 \\
+            Set external time    & \texttt{"h"}  & $\mathtt{0{\times}08}$ & 3-byte time of external laser in milliseconds             \\
+            Set finishing time   & \texttt{"f"}  & $\mathtt{0{\times}06}$ & 3-byte time of white light in milliseconds after exposing \\
+            Set wait time        & \texttt{"w"}  & $\mathtt{0{\times}17}$ & 3-byte time of waiting before exposing                    \\
+            Show all times       & \texttt{"t"}  & $\mathtt{0{\times}14}$ & \textit{none}                                             \\
+            Reset all times      & \texttt{"v"}  & $\mathtt{0{\times}16}$ & \textit{none}                                             \\
+            \hline
+        \end{tabular}
+    \end{adjustwidth}
+    \label{tbl:instrukce}
+\end{table}
 \end{document}
