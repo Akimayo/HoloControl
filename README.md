@@ -11,6 +11,9 @@
 - [Zdrojový kód](#zdrojovy-kod)
 
 ## Úvod
+Sada HoloControl slouží k řízení laserových zdrojů pro účely holografie. Skládá se z programu pro Raspberry Pi Pico pro samotné řízení, elektronického obvodu pro napájení, indikaci a ovládání a (semi-)grafického rozhraní pro Windows a Android.
+
+Tato sada byla vytvořena v rámci studentského projektu na MFF UK pro zjednodušení holografického experimentu.
 
 ## Rychlý manuál
 
