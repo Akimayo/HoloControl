@@ -50,7 +50,8 @@
                     <Label Text="{x:Static loc:Standard.Port_Title}" Grid.Column="0" />
                     <Picker ItemsSource="{Binding Connection.AvailablePorts}"
                             SelectedIndex="{Binding Connection.SelectedPort, Mode=TwoWay}"
-                            Grid.Column="1" TextColor="{StaticResource White}" 
+                            Grid.Column="1"
+                            TextColor="{StaticResource White}" 
                             TitleColor="{StaticResource White}" 
                             BackgroundColor="{StaticResource Gray600}" 
                             HorizontalOptions="Fill" />
