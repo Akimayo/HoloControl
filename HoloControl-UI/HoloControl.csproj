@@ -91,6 +91,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Foldable" Version="7.0.92" />
 		<PackageReference Include="System.IO.Ports" Version="7.0.0" />
@@ -127,6 +128,14 @@
 	  <MauiXaml Update="Views\Kiosk\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Extensions.Configuration" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Extensions.Logging" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

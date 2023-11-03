@@ -4,6 +4,7 @@ using HoloControl.Models;
 using System.Windows.Input;
 using HoloControl.Models.Form;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Mvvm.Input;
 
 namespace HoloControl.ViewModels
 {
@@ -40,26 +41,24 @@ namespace HoloControl.ViewModels
             this.Connection.SerialError += (r) => this.AddToHistory(r, '!');
             this.Connection.SerialStatus += (r) => this.AddToHistory(r, 'i');
 
-            this.SimpleCommand = new Command(this.ExecuteSimpleCommand);
-            this.ToggleCommand = new Command(this.ExectuteToggleCommand);
-            this.TimingCommand = new Command(this.ExecuteTimingCommand);
-            this.Connect = new Command(this.Connection.Connect);
-            this.Send = new Command(this.SendCommands, () => this.Connection.Status == ConnectionStatus.Connected && !this.Sending);
+            this.SimpleCommand = new RelayCommand<string>(this.ExecuteSimpleCommand);
+            this.ToggleCommand = new RelayCommand<string>(this.ExectuteToggleCommand);
+            this.TimingCommand = new RelayCommand<string>(this.ExecuteTimingCommand);
+            this.Connect = new RelayCommand(this.Connection.Connect);
+            this.Send = new RelayCommand(this.SendCommands, () => this.Connection.Status == ConnectionStatus.Connected && !this.Sending);
         }
 
-        private void ExecuteSimpleCommand(object parameter)
+        private void ExecuteSimpleCommand(string parameter)
         {
-            this.CurrentCommand += (parameter as string) + " ";
+            this.CurrentCommand += parameter + " ";
         }
-        private void ExectuteToggleCommand(object parameter)
+        private void ExectuteToggleCommand(string color)
         {
-            if (parameter is string color)
-                this.ExecuteSimpleCommand(this.Colors[color]);
+            this.ExecuteSimpleCommand(this.Colors[color]);
         }
-        private void ExecuteTimingCommand(object parameter)
+        private void ExecuteTimingCommand(string time)
         {
-            if (parameter is string time)
-                this.ExecuteSimpleCommand(this.Timings[time]);
+            this.ExecuteSimpleCommand(this.Timings[time]);
         }
 
         private static readonly Regex InvisibleStripper = new(@"[^\x20-\x7e\x80\x82-\x8c\x8e\x91-\x9c\x9e-\xff]");
