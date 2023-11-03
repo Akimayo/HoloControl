@@ -7,7 +7,7 @@ namespace HoloControl.Models
 {
     internal class SerialConnectionModel : INotifyPropertyChanged
     {
-        private static readonly Regex CommandFormat = new(@"([0-9a-fA-F]{8})\s?"), InitReply = new (@"^HoloControl;b:([0-9A-Fa-f]*);v:(.*)");
+        private static readonly Regex CommandFormat = new(@"([0-9a-fA-F]{8})\s?"), InitReply = new(@"^HoloControl;b:([0-9A-Fa-f]*);v:([A-Za-z 0-9:]+)");
 
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate void SerialResponseEventHandler(string response);
@@ -20,11 +20,13 @@ namespace HoloControl.Models
         public ConnectionStatus Status { get => this._status; set { this._status = value; this.Update(); this.ReloadPorts(); } }
         private ConnectionStatus _status = ConnectionStatus.Disconnected;
 
-        public DateTime BoardBuildTime { get => this._boardBuildTime; private set { this._boardBuildTime = value; this.Update(); } }
+        public DateTime BoardBuildTime { get => this._boardBuildTime; private set { this._boardBuildTime = value; this.Update(); this.Update(nameof(this.Board)); } }
         private DateTime _boardBuildTime;
 
-        public string BoardUid { get => this._boardUid; private set { this._boardUid = value; this.Update(); } }
+        public string BoardUid { get => this._boardUid; private set { this._boardUid = value; this.Update(); this.Update(nameof(this.Board)); } }
         private string _boardUid;
+
+        public string Board { get => $"UID: {this.BoardUid}\r\nBuild Date: {this.BoardBuildTime}"; }
 
         public int SelectedPort { get => this._selectedPort; set { this._selectedPort = value; this.Update(); } }
         private int _selectedPort = -1;
@@ -60,6 +62,7 @@ namespace HoloControl.Models
                             send[j] = Convert.ToByte(command.Substring(cmd.Index + 2 * j, 2), 16);
                         }
                         send[0] += 64;
+                        Task.Delay(1000);
                         this.OpenPort.Write(send, 0, 4);
                         sent.Append(Encoding.ASCII.GetString(send, 0, 4));
                     }
@@ -77,10 +80,11 @@ namespace HoloControl.Models
         }
         public void Connect()
         {
+            int portIndex = this.SelectedPort;
             if (this.SerialReader != null)
             {
                 this.ReaderCancellation.Cancel();
-                if(!this.SerialReader.IsCanceled) this.SerialReader.Wait();
+                if (!this.SerialReader.IsCanceled) this.SerialReader.Wait();
                 if (this.SerialReader.IsCompleted) this.SerialReader.Dispose();
             }
             if (this.OpenPort != null)
@@ -92,30 +96,31 @@ namespace HoloControl.Models
             }
             this.BoardBuildTime = DateTime.MinValue;
             this.BoardUid = null;
-            int portIndex = this.SelectedPort;
             this.ReaderCancellation = new();
             this.SerialReader = new Task(this.KeepReadingSerial, this.ReaderCancellation.Token);
             if (portIndex >= 0)
             {
                 this.Status = ConnectionStatus.Connecting;
                 PlatformConnectionManager port = PlatformConnectionManager.Create(this.AvailablePorts[portIndex], 115200);
+                this.SerialStatus?.Invoke("Connecting to " + port.GetPortName() + "...");
                 try
                 {
                     port.Open();
                     this.OpenPort = port;
                     this.OpenPort.ErrorReceived += (s, e) => this.SerialError?.Invoke(e.ToString());
-                    port.Write(new byte[] { 0,0,0,0 },0,4);
+                    port.Write(new byte[] { 0, 0, 0, 0 }, 0, 4);
                     string comm = port.ReadExisting();
                     if (!string.IsNullOrEmpty(comm))
                     {
                         if (InitReply.IsMatch(comm))
                         {
                             Match matches = InitReply.Match(comm);
-                            this.BoardBuildTime = DateTime.Parse(matches.Groups[2].Value);
+                            this.BoardBuildTime = DateTime.ParseExact(matches.Groups[2].Value, "ddd MMM dd HH:mm:ss yyyy", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                             this.BoardUid = matches.Groups[1].Value;
                             this.SerialReader.Start();
                             this.Status = ConnectionStatus.Connected;
                             this.SerialStatus?.Invoke("Connected to a HoloControl board on port " + port.GetPortName());
+                            this.SelectedPort = portIndex;
                         }
                         else throw new Exception("Device is not a HoloControl board");
                     }

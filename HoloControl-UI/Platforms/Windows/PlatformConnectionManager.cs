@@ -1,4 +1,5 @@
 ﻿using System.IO.Ports;
+using System.Text;
 
 namespace HoloControl.Models
 {
@@ -9,7 +10,7 @@ namespace HoloControl.Models
 
         private PlatformConnectionManager(string port, int baudRate)
         {
-            this._port = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One) { RtsEnable = true, DtrEnable = true };
+            this._port = new SerialPort(port, baudRate, Parity.None, 8, StopBits.One) { RtsEnable = true, DtrEnable = true, Encoding = Encoding.UTF8 };
             this._port.ErrorReceived += this.ErrorReceived;
         }
         public partial bool HasBytesToRead() => this._port.BytesToRead > 0;

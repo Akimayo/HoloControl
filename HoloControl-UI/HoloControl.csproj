@@ -84,7 +84,14 @@
 	  <None Remove="Resources\Fonts\B612-Italic.ttf" />
 	  <None Remove="Resources\Fonts\B612-Regular.ttf" />
 	  <None Remove="Resources\Fonts\B612Mono-Regular.ttf" />
-	  <None Remove="Resources\Images\info_white.svg" />
+	  <None Remove="Resources\Images\cmd_check_square.svg" />
+	  <None Remove="Resources\Images\cmd_paper_plane_right.svg" />
+	  <None Remove="resources\images\cmd_pause_circle.svg" />
+	  <None Remove="Resources\Images\cmd_play_circle.svg" />
+	  <None Remove="resources\images\cmd_stop_circle.svg" />
+	  <None Remove="Resources\Images\cmd_usb.svg" />
+	  <None Remove="Resources\Images\cmd_warning_diamond.svg" />
+	  <None Remove="Resources\Images\cmd_x_square.svg" />
 	  <None Remove="Resources\Images\paper_plane.svg" />
 	  <None Remove="Resources\Images\paper_plane_white.svg" />
 	  <None Remove="Resources\Images\play_pause.svg" />
