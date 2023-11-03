@@ -74,8 +74,8 @@ namespace HoloControl.Models
             if (this.SerialReader != null)
             {
                 this.ReaderCancellation.Cancel();
-                this.SerialReader.Wait();
-                this.SerialReader.Dispose();
+                if(!this.SerialReader.IsCanceled) this.SerialReader.Wait();
+                if (this.SerialReader.IsCompleted) this.SerialReader.Dispose();
             }
             if (this.OpenPort != null)
             {
@@ -90,7 +90,7 @@ namespace HoloControl.Models
             if (portIndex >= 0)
             {
                 this.Status = ConnectionStatus.Connecting;
-                PlatformConnectionManager port = PlatformConnectionManager.Create(this.AvailablePorts[portIndex], 9600);
+                PlatformConnectionManager port = PlatformConnectionManager.Create(this.AvailablePorts[portIndex], 115200);
                 try
                 {
                     port.Open();
