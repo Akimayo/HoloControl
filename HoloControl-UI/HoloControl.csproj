@@ -84,10 +84,15 @@
 	  <None Remove="Resources\Fonts\B612-Italic.ttf" />
 	  <None Remove="Resources\Fonts\B612-Regular.ttf" />
 	  <None Remove="Resources\Fonts\B612Mono-Regular.ttf" />
+	  <None Remove="Resources\Images\info_white.svg" />
 	  <None Remove="Resources\Images\paper_plane.svg" />
+	  <None Remove="Resources\Images\paper_plane_white.svg" />
 	  <None Remove="Resources\Images\play_pause.svg" />
+	  <None Remove="Resources\Images\play_pause_white.svg" />
 	  <None Remove="Resources\Images\steering_wheel.svg" />
+	  <None Remove="Resources\Images\steering_wheel_white.svg" />
 	  <None Remove="Resources\Images\timer.svg" />
+	  <None Remove="Resources\Images\timer_white.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
