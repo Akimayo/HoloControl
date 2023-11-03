@@ -5,6 +5,7 @@
 #include "../power/output_status.h"
 #include "../power/input_color_switch.h"
 #include "../power/output_buzzer.h"
+#include "pico/unique_id.h"
 
 #define COLOR_STRING(_buffer, _color) snprintf(_buffer, 4, "%c%c%c%c", 45 + ((_color & COLOR_RED) > 0) * 37, 45 + ((_color & COLOR_GREEN) > 0) * 26, 45 + ((_color & COLOR_BLUE) > 0) * 21, 45 + ((_color & COLOR_EXT) > 0) * 24)
 
@@ -24,6 +25,13 @@ void error(char *message)
 #pragma endregion
 
 #pragma region Instructions
+char send_init_data(int _) //   [0]
+{
+    char id[2*PICO_UNIQUE_BOARD_ID_SIZE_BYTES+1];
+    pico_get_unique_board_id_string(id, 2*PICO_UNIQUE_BOARD_ID_SIZE_BYTES+1);
+    printf("HoloControl;b:%s;v:%s\n", id, __TIMESTAMP__);
+}
+
 char set_blue_timing(int value) // b [2]
 {
     if (G_auto_run & 8)
@@ -231,6 +239,7 @@ char run_reset(int _) // z [26]
 #pragma endregion
 
 char (*executors[32])(int) = {
+    [0] = send_init_data,
     [2] = set_blue_timing,     // "b"
     [3] = set_manual_colors,   // "c"
     [4] = get_current_color,   // "d"
