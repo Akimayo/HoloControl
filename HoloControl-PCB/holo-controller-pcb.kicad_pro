@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.6,
-          "width": 1.6
+          "drill": 1.02,
+          "height": 1.7,
+          "width": 1.7
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -45,7 +45,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.0
+          "min_clearance": 1.0
         }
       },
       "diff_pair_dimensions": [
@@ -533,11 +533,11 @@
       "Net-(Q2-B)": "9V Power Line",
       "Net-(Q3-B)": "9V Power Line",
       "Net-(Q4-B)": "9V Power Line",
-      "Net-(R4-Pad1)": "Indication Line",
+      "Net-(R10-Pad2)": "Indication Line",
+      "Net-(R5-Pad1)": "Indication Line",
       "Net-(SW1A-A)": "Button Logic Line",
       "Net-(SW1A-B)": "Button Logic Line",
       "Net-(SW1A-C)": "Button Logic Line",
-      "Net-(U1-AGND)": "Indication Line",
       "Net-(U1-GPIO0)": "Transistor Logic Line",
       "Net-(U1-GPIO20)": "Button Logic Line",
       "Net-(U1-GPIO7)": "Transistor Logic Line",
@@ -555,16 +555,8 @@
         "pattern": "I*-*"
       },
       {
-        "netclass": "9V Power Line",
-        "pattern": "Laser*"
-      },
-      {
         "netclass": "Transistor Logic Line",
-        "pattern": "Q*-Logic"
-      },
-      {
-        "netclass": "9V Power Line",
-        "pattern": "Superflux"
+        "pattern": "Q*"
       },
       {
         "netclass": "Button Logic Line",
@@ -576,7 +568,15 @@
       },
       {
         "netclass": "Indication Line",
-        "pattern": "Buzzer*"
+        "pattern": "BZ*"
+      },
+      {
+        "netclass": "9V Power Line",
+        "pattern": "I?"
+      },
+      {
+        "netclass": "Indication Line",
+        "pattern": "BZ1*"
       }
     ]
   },

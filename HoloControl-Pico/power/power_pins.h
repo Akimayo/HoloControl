@@ -22,8 +22,8 @@
 #define OUT_COL_R 16
 #define OUT_COL_G 17
 #define OUT_COL_B 18
-#define OUT_COL_W 26 // Finishing LED
-#define OUT_COL_E 27 // External laser
+#define OUT_COL_W 27 // Finishing LED
+#define OUT_COL_E 26 // External laser
 
 // Lasers
 #define TRA_LSR_R 9
