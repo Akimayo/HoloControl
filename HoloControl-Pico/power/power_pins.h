@@ -11,8 +11,8 @@
 
 // Status
 #define OUT_STA_ERR 10 // RGB LED Red
-#define OUT_STA_AUT 11 // RGB LED Blue
-#define OUT_STA_MAN 12 // RGB LED Green
+#define OUT_STA_AUT 11 // RGB LED Green
+#define OUT_STA_MAN 12 // RGB LED Blue
 
 // TTL
 #define OUT_TTL 13 // External laser controller
