@@ -7,7 +7,7 @@
 #include "../power/output_buzzer.h"
 #include "pico/unique_id.h"
 
-#define COLOR_STRING(_buffer, _color) snprintf(_buffer, 4, "%c%c%c%c", 45 + ((_color & COLOR_RED) > 0) * 37, 45 + ((_color & COLOR_GREEN) > 0) * 26, 45 + ((_color & COLOR_BLUE) > 0) * 21, 45 + ((_color & COLOR_EXT) > 0) * 24)
+#define COLOR_STRING(_buffer, _color) snprintf(_buffer, 5, "%c%c%c%c", 45 + ((_color & COLOR_RED) > 0) * 37, 45 + ((_color & COLOR_GREEN) > 0) * 26, 45 + ((_color & COLOR_BLUE) > 0) * 21, 45 + ((_color & COLOR_EXT) > 0) * 24)
 
 #pragma region Replies
 void reply_d(char *name, long unsigned int value)
@@ -27,8 +27,8 @@ void error(char *message)
 #pragma region Instructions
 char send_init_data(int _) //   [0]
 {
-    char id[2*PICO_UNIQUE_BOARD_ID_SIZE_BYTES+1];
-    pico_get_unique_board_id_string(id, 2*PICO_UNIQUE_BOARD_ID_SIZE_BYTES+1);
+    char id[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+    pico_get_unique_board_id_string(id, 2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1);
     printf("HoloControl;b:%s;v:%s\n", id, __TIMESTAMP__);
 }
 
@@ -48,7 +48,7 @@ char set_manual_colors(int value) // c [3]
 {
     if (G_mode == MODE_MANUAL)
     {
-        G_color = ((value & 0xFF0000) > 0) * COLOR_RED + ((value & 0x00FF00) > 0) * COLOR_GREEN + ((value & 0x0000FF) > 0) * COLOR_BLUE;
+        G_color = ((value & 0xFF0000) > 0) * COLOR_RED + ((value & 0x00FF00) > 0) * COLOR_GREEN + ((value & 0x0000FF) > 0) * COLOR_BLUE + (G_color & COLOR_EXT);
         char code[5];
         COLOR_STRING(code, G_color);
         reply_s("New color", code);
@@ -71,12 +71,13 @@ char get_current_color(int _) // d [4]
     return 0;
 }
 
+char *on_off[] = {[0] = "OFF", [1] = "ON"};
 char set_finish_power(int value) // e [5]
 {
     if (G_mode == MODE_MANUAL)
     {
         G_white = value > 0;
-        reply_d("Finishing LED", G_white); // FIXME: Find better indication
+        reply_s("Finishing LED", on_off[G_white]);
     }
     else
         error("Only available in manual mode");
@@ -123,7 +124,7 @@ char set_manual_external(int value) // i [9]
 {
     if (G_mode == MODE_MANUAL)
     {
-        G_color = (value > 0) * COLOR_EXT;
+        G_color = (G_color & (COLOR_RED | COLOR_BLUE | COLOR_GREEN)) + (value > 0) * COLOR_EXT; // FIXME: This turns off all other colors
         char code[5];
         COLOR_STRING(code, G_color);
         reply_s("New color", code);
@@ -204,10 +205,11 @@ char run_start(int _) // x [24]
         error("Exposure is already in progress");
     else if (G_mode & MODE_AUTO)
     {
-        printf("\n▶️  Exposure will %sSTART after waiting for %lu s\n", G_auto_run & 8 ? "re-" : "", G_waiting / 1e6);
+        printf("\n▶️  Exposure will %sSTART after waiting for %lu s\n", G_auto_run & 8 ? "re-" : "", G_waiting/1000000);
         start();
     }
-    else error("Switch the device into AUTO mode first");
+    else
+        error("Switch the device into AUTO mode first");
     return 0;
 }
 

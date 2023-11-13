@@ -116,9 +116,10 @@ int main()
         // - Timing
         if (G_mode & MODE_AUTO)
         {
-            if (G_auto_run & 1)
+            if (G_auto_run & 1) // If exposure is running
             {
-                if (G_auto_run & 4)
+                hide_status();
+                if (G_auto_run & 4) // If waiting for start
                 {
                     // Wait for start
                     if (start >= waiting_until)
@@ -127,7 +128,7 @@ int main()
                         enable_buzzer(4000);
                     }
                 }
-                else if (G_auto_run & 2)
+                else if (G_auto_run & 2) // If finishing exposure
                 {
                     // Finishing light
                     G_color = COLOR_OFF;
