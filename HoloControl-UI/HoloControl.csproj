@@ -84,13 +84,26 @@
 	  <None Remove="Resources\Fonts\B612-Italic.ttf" />
 	  <None Remove="Resources\Fonts\B612-Regular.ttf" />
 	  <None Remove="Resources\Fonts\B612Mono-Regular.ttf" />
+	  <None Remove="Resources\Images\cmd_check_square.svg" />
+	  <None Remove="Resources\Images\cmd_paper_plane_right.svg" />
+	  <None Remove="resources\images\cmd_pause_circle.svg" />
+	  <None Remove="Resources\Images\cmd_play_circle.svg" />
+	  <None Remove="resources\images\cmd_stop_circle.svg" />
+	  <None Remove="Resources\Images\cmd_usb.svg" />
+	  <None Remove="Resources\Images\cmd_warning_diamond.svg" />
+	  <None Remove="Resources\Images\cmd_x_square.svg" />
 	  <None Remove="Resources\Images\paper_plane.svg" />
+	  <None Remove="Resources\Images\paper_plane_white.svg" />
 	  <None Remove="Resources\Images\play_pause.svg" />
+	  <None Remove="Resources\Images\play_pause_white.svg" />
 	  <None Remove="Resources\Images\steering_wheel.svg" />
+	  <None Remove="Resources\Images\steering_wheel_white.svg" />
 	  <None Remove="Resources\Images\timer.svg" />
+	  <None Remove="Resources\Images\timer_white.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Foldable" Version="7.0.92" />
 		<PackageReference Include="System.IO.Ports" Version="7.0.0" />
@@ -127,6 +140,14 @@
 	  <MauiXaml Update="Views\Kiosk\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Extensions.Configuration" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Extensions.Logging" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

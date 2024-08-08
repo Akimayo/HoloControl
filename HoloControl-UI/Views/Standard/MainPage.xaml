@@ -16,7 +16,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <foldable:TwoPaneView MinWideModeWidth="1200" BindingContext="{StaticResource Context}">
+    <foldable:TwoPaneView MinWideModeWidth="1300" BindingContext="{StaticResource Context}">
         <foldable:TwoPaneView.Pane1>
             <Grid VerticalOptions="Fill" Padding="8" BackgroundColor="{StaticResource Gray950}" ColumnSpacing="8">
                 <Grid.RowDefinitions>
@@ -50,7 +50,8 @@
                     <Label Text="{x:Static loc:Standard.Port_Title}" Grid.Column="0" />
                     <Picker ItemsSource="{Binding Connection.AvailablePorts}"
                             SelectedIndex="{Binding Connection.SelectedPort, Mode=TwoWay}"
-                            Grid.Column="1" TextColor="{StaticResource White}" 
+                            Grid.Column="1"
+                            TextColor="{StaticResource White}" 
                             TitleColor="{StaticResource White}" 
                             BackgroundColor="{StaticResource Gray600}" 
                             HorizontalOptions="Fill" />
@@ -61,7 +62,7 @@
                                  WidthRequest="12"
                                  HeightRequest="12"
                                  VerticalOptions="Center" />
-                        <Label Text="{Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" />
+                        <Label Text="{Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" ToolTipProperties.Text="{Binding Connection.Board}" />
                     </HorizontalStackLayout>
                 </Grid>
                 <Label Text="{x:Static loc:Standard.Console_Title}" Margin="0,16,0,0" FontSize="Title" TextColor="{StaticResource Gray100}" Grid.Row="1" Grid.ColumnSpan="2" />
@@ -69,18 +70,35 @@
                         TextColor="{StaticResource White}"
                         Text="{Binding History}"
                         FontFamily="B612 Mono"
+                        IsVisible="False"
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
                         TextChanged="Editor_TextChanged" />
-                <ProgressBar IsEnabled="{Binding Sending}" IsVisible="{Binding Sending}" ProgressColor="{StaticResource Secondary}" Grid.Row="3" Margin="0,4" Grid.ColumnSpan="2" />
+                <CollectionView Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,0,48"
+                                ItemsSource="{Binding HistoryList}"
+                                x:Name="History">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:HistoryItem">
+                            <HorizontalStackLayout>
+                                <Image Source="{Binding Icon}" Margin="0,-4,12,-4" WidthRequest="20" />
+                                <Label FontFamily="{Binding Font}" TextColor="{StaticResource Gray100}" Text="{Binding Message}" ToolTipProperties.Text="{Binding Timestamp}" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <ProgressBar IsEnabled="{Binding Sending}" IsVisible="{Binding Sending}" ProgressColor="{StaticResource Secondary}" Grid.Row="3" Margin="0,-44,0,48" Grid.ColumnSpan="2" />
                 <Entry FontFamily="B612 Mono"
                        Placeholder="HEX..." 
                        TextColor="{StaticResource White}" 
                        Text="{Binding CurrentCommand, Mode=TwoWay}" 
                        Grid.Row="4" 
                        Grid.Column="0"
+                       Margin="0,-48,0,48"
                        IsEnabled="{Binding Sending, Converter={StaticResource NegateConverter}}"
-                       ReturnCommand="{Binding Send}" />
+                       ReturnCommand="{Binding Send}"
+                       MaxLength="8" />
                 <ImageButton Source="paper_plane.png"
                              CornerRadius="6"
                              IsEnabled="{Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}"
@@ -88,6 +106,7 @@
                              BackgroundColor="{StaticResource Secondary}"
                              Grid.Row="4"
                              Grid.Column="1"
+                             Margin="0,-48,0,48"
                              Command="{Binding Send}" />
             </Grid>
         </foldable:TwoPaneView.Pane1>
@@ -115,7 +134,7 @@
                                     <Setter.Value>
                                         <ColumnDefinitionCollection>
                                             <ColumnDefinition Width="36" />
-                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="220"   />
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="2*" />
                                         </ColumnDefinitionCollection>
@@ -139,7 +158,7 @@
                                 <Setter Property="FontFamily" Value="B612 Mono" />
                                 <Setter Property="Margin" Value="8,0" />
                                 <Setter Property="Padding" Value="4,2" />
-                                <Setter Property="BackgroundColor" Value="{StaticResource Gray300}" />
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
                             </Style>
                             <Style TargetType="Label" Class="SpacerLabel">
                                 <Setter Property="Padding" Value="8,2" />
@@ -153,6 +172,7 @@
                                 <Setter Property="Margin" Value="0,4" />
                                 <Setter Property="FontSize" Value="18" />
                                 <Setter Property="Grid.Column" Value="1" />
+                                <Setter Property="IsEnabled" Value="{Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}" />
                             </Style>
                             <Style TargetType="HorizontalStackLayout">
                                 <Setter Property="Spacing" Value="4" />
@@ -167,7 +187,7 @@
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <!--#region Information Controls-->
-                        <Image Source="info.png"/>
+                        <Image Source="{AppThemeBinding Light=info.png, Dark=info_white.png}" />
                         <Label Text="{x:Static loc:Standard.Controls_Information_Title}" StyleClass="Heading" />
                         <!--Get mode-->
                         <Button Text="{x:Static loc:Standard.Controls_Information_Mode}" Grid.Row="1" Command="{Binding SimpleCommand}" CommandParameter="13000000" />
@@ -205,7 +225,7 @@
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <!--#region Manual Controls-->
-                        <Image Source="steering_wheel.png" />
+                        <Image Source="{AppThemeBinding Light=steering_wheel.png, Dark=steering_wheel_white.png}" />
                         <Label Text="{x:Static loc:Standard.Controls_Manual_Title}" StyleClass="Heading" />
                         <!--Set colors-->
                         <Button Text="{x:Static loc:Standard.Controls_Manual_Colors}" Grid.Row="1" Command="{Binding ToggleCommand}" CommandParameter="RGB" />
@@ -269,7 +289,7 @@
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <!--#region Timing Controls-->
-                        <Image Source="timer.png" />
+                        <Image Source="{AppThemeBinding Light=timer.png, Dark=timer_white.png}" />
                         <Label Text="{x:Static loc:Standard.Controls_Timing_Title}" StyleClass="Heading" />
                         <!--Set wait time-->
                         <Button Text="{x:Static loc:Standard.Controls_Timing_Wait}" Grid.Row="1" Command="{Binding TimingCommand}" CommandParameter="Wait" />
@@ -345,7 +365,7 @@
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <!--#region Run Controls-->
-                        <Image Source="play_pause.png" />
+                        <Image Source="{AppThemeBinding Light=play_pause.png, Dark=play_pause_white.png}" />
                         <Label Text="{x:Static loc:Standard.Controls_Run_Title}" StyleClass="Heading" />
                         <!--Start-->
                         <Button Text="{x:Static loc:Standard.Controls_Run_Start}" Grid.Row="1" BackgroundColor="{StaticResource Tertiary}" Command="{Binding SimpleCommand}" CommandParameter="18000000" />
