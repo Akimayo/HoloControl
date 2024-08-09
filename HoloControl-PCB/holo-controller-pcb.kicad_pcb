@@ -1255,7 +1255,7 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 7bc9ecec-a3ba-4a63-8721-a94f0f4b0871)
     )
-    (fp_text value "Con_SW23" (at 2.54 5.08) (layer "F.SilkS") hide
+    (fp_text value "Con_SW23" (at 2.54 5.08) (layer "F.SilkS")
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 37f22a07-bd4e-446f-95d0-5a7e426d10a8)
     )
