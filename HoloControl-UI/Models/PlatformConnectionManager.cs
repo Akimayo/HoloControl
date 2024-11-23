@@ -14,5 +14,6 @@ namespace HoloControl.Models
         public partial void Open();
         public partial void Close();
         public partial string GetPortName();
+        public partial bool IsOpen();
     }
 }

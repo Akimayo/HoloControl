@@ -34,6 +34,7 @@ namespace HoloControl.Models
         private PlatformConnectionManager OpenPort;
         private Task SerialReader;
         private CancellationTokenSource ReaderCancellation;
+        private readonly IDispatcherTimer AliveTimer = Dispatcher.GetForCurrentThread().CreateTimer();
 
         private void KeepReadingSerial()
         {
@@ -80,6 +81,7 @@ namespace HoloControl.Models
         }
         public void Connect()
         {
+            this.AliveTimer.Stop();
             int portIndex = this.SelectedPort;
             if (this.SerialReader != null)
             {
@@ -98,6 +100,8 @@ namespace HoloControl.Models
             this.BoardUid = null;
             this.ReaderCancellation = new();
             this.SerialReader = new Task(this.KeepReadingSerial, this.ReaderCancellation.Token);
+            this.AliveTimer.Interval = TimeSpan.FromSeconds(5);
+            this.AliveTimer.Tick += this.CheckPortAlive;
             if (portIndex >= 0)
             {
                 this.Status = ConnectionStatus.Connecting;
@@ -118,12 +122,22 @@ namespace HoloControl.Models
                             this.BoardBuildTime = DateTime.ParseExact(matches.Groups[2].Value, "ddd MMM dd HH:mm:ss yyyy", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                             this.BoardUid = matches.Groups[1].Value;
                             this.SerialReader.Start();
+                            this.AliveTimer.Start();
                             this.Status = ConnectionStatus.Connected;
                             this.SerialStatus?.Invoke("Connected to a HoloControl board on port " + port.GetPortName());
                             this.SelectedPort = portIndex;
                         }
                         else throw new Exception("Device is not a HoloControl board");
                     }
+#if TRACE
+                    else
+                    {
+                        this.SerialReader.Start();
+                        this.Status = ConnectionStatus.Connected;
+                        this.SerialStatus?.Invoke("Connected to port " + port.GetPortName() + ", possibly a null emulator");
+                        this.SelectedPort = portIndex;
+                    }
+#else
                     else throw new Exception("Device did not respond");
                 }
                 catch (Exception ex)
@@ -133,7 +147,19 @@ namespace HoloControl.Models
                 }
             }
         }
-        private void ReloadPorts()
+        private void CheckPortAlive(object _, EventArgs __) => this.CheckPortAlive();
+        private void CheckPortAlive()
+        {
+            if (this.OpenPort != null && !this.OpenPort.IsOpen())
+            {
+                this.ReaderCancellation.Cancel();
+                this.Status = ConnectionStatus.Disconnected;
+                this.SerialStatus?.Invoke("Port " + this.AvailablePorts[this.SelectedPort] + " disconnected");
+                this.SelectedPort = -1;
+                this.AliveTimer.Stop();
+            }
+        }
+        public void ReloadPorts()
         {
             this.AvailablePorts = PlatformConnectionManager.GetPortNames();
             this.SelectedPort = this.OpenPort == null ? -1 : this.AvailablePorts.IndexOf(this.OpenPort.GetPortName());

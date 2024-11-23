@@ -53,6 +53,10 @@ namespace HoloControl.Models
             this._connection.ReleaseInterface(this._usbInterface);
             this._connection.Close();
         }
+        public partial bool IsOpen()
+        {
+            return this._usbManager.DeviceList.ContainsValue(this._selectedDevice);
+        }
 
         public partial void Write(byte[] bytes, int offset, int length) => this._connection.BulkTransfer(this._write, bytes, length, 500);
 

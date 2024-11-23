@@ -25,5 +25,6 @@ namespace HoloControl.Models
 
         public partial void Write(byte[] bytes, int offset, int length) => this._port.Write(bytes, offset, length);
         public partial string GetPortName() => this._port.PortName;
+        public partial bool IsOpen() => this._port.IsOpen;
     }
 }
