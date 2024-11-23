@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using HoloControl.Models;
 using System.Windows.Input;
 using HoloControl.Models.Form;
-using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls.Shapes;
@@ -61,9 +60,8 @@ namespace HoloControl.ViewModels
         {
             // this.CurrentCommand += parameter + " ";
             this.Sending = true;
-            string sent = this.Connection.SendString(parameter);
-            if (!string.IsNullOrEmpty(sent))
-                this.AddToHistory(InvisibleStripper.Replace(sent, Replacer), '>');
+            byte[] sent = this.Connection.SendString(parameter);
+            if (sent.Length > 0) this.AddToHistory(sent);
             this.Sending = false;
         }
         private void ExectuteToggleCommand(string color)
@@ -75,30 +73,36 @@ namespace HoloControl.ViewModels
             this.ExecuteSimpleCommand(this.Timings[time]);
         }
 
-        private static readonly Regex InvisibleStripper = new(@"[^\x20-\x7e\x80\x82-\x8c\x8e\x91-\x9c\x9e-\xff]");
-        private static string Replacer(Match s) => ((int)s.Value[0] & 1) > 0 ? "⬜" : "▫️";
+
         private void SendCommands()
         {
             this.Sending = true;
-            string sent = this.Connection.SendString(this.CurrentCommand);
-            if (!string.IsNullOrEmpty(sent))
+            byte[] sent = this.Connection.SendString(this.CurrentCommand);
+            if (sent.Length > 0)
             {
-                this.AddToHistory(InvisibleStripper.Replace(sent, Replacer), '>');
+                this.AddToHistory(sent);
                 this.CurrentCommand = "";
             }
             this.Sending = false;
         }
 
-        private void AddToHistory(string lines)
+        private void AddToHistory(string lines) // For serial replies
         {
             this.History += lines;
-            foreach(string l in lines.Split('\n')) if(!string.IsNullOrWhiteSpace(l)) this.HistoryList.Add(new(l));
-            while (this.HistoryList.Count > 8) this.HistoryList.RemoveAt(0);
+            foreach (string l in lines.Split('\n')) if (!string.IsNullOrWhiteSpace(l)) this.HistoryList.Add(new(l));
+            //while (this.HistoryList.Count > 8) this.HistoryList.RemoveAt(0);
+        }
+        private void AddToHistory(byte[] command)
+        {
+            HistoryItem entry = new(command);
+            this.History += $"[>] {entry.Message}\n";
+            this.HistoryList.Add(entry);
         }
         private void AddToHistory(string lines, char indicator)
         {
-            this.History += $"[{indicator}] {lines}\n";
-            this.HistoryList.Add(new(indicator switch { '>' => HistoryItem.ItemType.Command, 'i' => HistoryItem.ItemType.Info, _ => HistoryItem.ItemType.Error }, lines));
+            HistoryItem entry = new(indicator switch { '>' => HistoryItem.ItemType.Command, 'i' => HistoryItem.ItemType.Info, _ => HistoryItem.ItemType.Error }, lines);
+            this.History += $"[{indicator}] {entry.Message}\n";
+            this.HistoryList.Add(entry);
         }
 
         private void Update([CallerMemberName] string propertyName = null) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

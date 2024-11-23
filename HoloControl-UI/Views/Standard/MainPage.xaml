@@ -54,7 +54,7 @@
                             Grid.Column="1"
                             TextColor="{StaticResource White}" 
                             TitleColor="{StaticResource White}" 
-                            BackgroundColor="{StaticResource Gray600}" 
+                            BackgroundColor="{StaticResource Gray600}"
                             HorizontalOptions="Fill" />
                     <Button Text="{x:Static loc:Standard.Port_Connect}" Grid.Column="2" Command="{Binding Connect}" />
                     <Label Text="{x:Static loc:Standard.Port_Status_Title}" Grid.Column="4" />
@@ -85,6 +85,7 @@
                             <HorizontalStackLayout>
                                 <Image Source="{Binding Icon}" Margin="0,-4,12,-4" WidthRequest="20" />
                                 <Label FontFamily="{Binding Font}" TextColor="{StaticResource Gray100}" Text="{Binding Message}" ToolTipProperties.Text="{Binding Timestamp}" />
+                                <Label FontFamily="{Binding Font}" TextColor="{StaticResource Gray300}" FontSize="8"  Text="{Binding Hex}" Margin="16,4,0,4" />
                             </HorizontalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -96,10 +97,8 @@
                        Text="{Binding CurrentCommand, Mode=TwoWay}" 
                        Grid.Row="4" 
                        Grid.Column="0"
-                       Margin="0,-48,0,48"
                        IsEnabled="{Binding Sending, Converter={StaticResource NegateConverter}}"
-                       ReturnCommand="{Binding Send}"
-                       MaxLength="8" />
+                       ReturnCommand="{Binding Send}" />
                 <ImageButton Source="paper_plane.png"
                              CornerRadius="6"
                              IsEnabled="{Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}"
@@ -107,7 +106,6 @@
                              BackgroundColor="{StaticResource Secondary}"
                              Grid.Row="4"
                              Grid.Column="1"
-                             Margin="0,-48,0,48"
                              Command="{Binding Send}" />
             </Grid>
         </foldable:TwoPaneView.Pane1>

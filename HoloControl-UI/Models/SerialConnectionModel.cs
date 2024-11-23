@@ -7,7 +7,7 @@ namespace HoloControl.Models
 {
     internal class SerialConnectionModel : INotifyPropertyChanged
     {
-        private static readonly Regex CommandFormat = new(@"([0-9a-fA-F]{8})\s?"), InitReply = new(@"^HoloControl;b:([0-9A-Fa-f]*);v:([A-Za-z 0-9:]+)");
+        private static readonly Regex CommandFormat = new(@"([0-9a-fA-F]{1,8})\s?"), InitReply = new(@"^HoloControl;b:([0-9A-Fa-f]*);v:([A-Za-z 0-9:]+)");
 
         public event PropertyChangedEventHandler PropertyChanged;
         public delegate void SerialResponseEventHandler(string response);
@@ -48,28 +48,34 @@ namespace HoloControl.Models
             }
         }
 
-        public string SendString(string command)
+        public byte[] SendString(string command)
         {
             try
             {
-                StringBuilder sent = new();
+                int len = command.Length % 8 > 0 ? 4 * (command.Length / 8 + 1) : command.Length / 2;
+                byte[] sent = new byte[len];
                 if (CommandFormat.IsMatch(command))
                 {
+                    int index, i = 0;
                     byte[] send = new byte[4];
                     foreach (ValueMatch cmd in CommandFormat.EnumerateMatches(command))
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            send[j] = Convert.ToByte(command.Substring(cmd.Index + 2 * j, 2), 16);
+                            index = cmd.Index + 2 * j;
+                            if (index + 1 < command.Length) send[j] = Convert.ToByte(command.Substring(index, 2), 16);
+                            else if (index < command.Length) send[j] = Convert.ToByte(command.Substring(index, 1) + "0", 16);
+                            else send[j] = 0;
+                            sent[4 * i + j] = send[j];
                         }
-                        send[0] += 64;
+                        if (send[0] < 64) sent[4 * i] = send[0] += 64; // Make it a letter for easier reading
                         Task.Delay(1000);
                         this.OpenPort.Write(send, 0, 4);
-                        sent.Append(Encoding.ASCII.GetString(send, 0, 4));
+                        i++;
                     }
-                    return sent.ToString();
+                    return sent;
                 }
-                else return null;
+                else return Array.Empty<byte>();
             }
             catch (System.Exception ex)
             {
@@ -139,6 +145,7 @@ namespace HoloControl.Models
                     }
 #else
                     else throw new Exception("Device did not respond");
+#endif
                 }
                 catch (Exception ex)
                 {
