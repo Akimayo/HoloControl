@@ -222,7 +222,7 @@
     <comment>Button to reset all timings</comment>
   </data>
   <data name="Controls.Timing.Time" xml:space="preserve">
-    <value>Exposision Time:</value>
+    <value>Exposition Time:</value>
     <comment>Label for exposition time input, followe by a colon</comment>
   </data>
   <data name="Controls.Timing.Title" xml:space="preserve">
