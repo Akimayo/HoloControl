@@ -58,12 +58,12 @@
                             HorizontalOptions="Fill" />
                     <Button Text="{x:Static loc:Standard.Port_Connect}" Grid.Column="2" Command="{Binding Connect}" />
                     <Label Text="{x:Static loc:Standard.Port_Status_Title}" Grid.Column="4" />
-                    <HorizontalStackLayout Grid.Column="5" VerticalOptions="Fill">
-                        <Ellipse BackgroundColor="{Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}" 
+                    <HorizontalStackLayout Grid.Column="5" VerticalOptions="Fill" ToolTipProperties.Text="{Binding Connection.Board}">
+                        <Ellipse Fill="{Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}" 
                                  WidthRequest="12"
                                  HeightRequest="12"
                                  VerticalOptions="Center" />
-                        <Label Text="{Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" ToolTipProperties.Text="{Binding Connection.Board}" />
+                        <Label Text="{Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Grid>
                 <Label Text="{x:Static loc:Standard.Console_Title}" Margin="0,16,0,0" FontSize="Title" TextColor="{StaticResource Gray100}" Grid.Row="1" Grid.ColumnSpan="2" />
