@@ -52,37 +52,39 @@ namespace HoloControl.Models
         {
             try
             {
-                int len = command.Length % 8 > 0 ? 4 * (command.Length / 8 + 1) : command.Length / 2;
-                byte[] sent = new byte[len];
+                List<byte> sent = new();
                 if (CommandFormat.IsMatch(command))
                 {
-                    int index, i = 0;
+                    int index, maxIndex, i = 0;
                     byte[] send = new byte[4];
                     foreach (ValueMatch cmd in CommandFormat.EnumerateMatches(command))
                     {
                         for (int j = 0; j < 4; j++)
                         {
                             index = cmd.Index + 2 * j;
-                            if (index + 1 < command.Length) send[j] = Convert.ToByte(command.Substring(index, 2), 16);
-                            else if (index < command.Length) send[j] = Convert.ToByte(command.Substring(index, 1) + "0", 16);
+                            maxIndex = cmd.Index + cmd.Length;
+                            if (char.IsWhiteSpace(command[maxIndex - 1])) maxIndex--;
+                            if (index + 1 < maxIndex) send[j] = Convert.ToByte(command.Substring(index, 2), 16);
+                            else if (index < maxIndex) send[j] = Convert.ToByte(command.Substring(index, 1) + "0", 16);
                             else send[j] = 0;
-                            sent[4 * i + j] = send[j];
                         }
-                        if (send[0] < 64) sent[4 * i] = send[0] += 64; // Make it a letter for easier reading
+                        if (send[0] < 64) send[0] += 64; // Make it a letter for easier reading
                         Task.Delay(1000);
                         this.OpenPort.Write(send, 0, 4);
+                        sent.AddRange(send);
                         i++;
                     }
-                    return sent;
+                    return sent.ToArray();
                 }
                 else return Array.Empty<byte>();
             }
             catch (System.Exception ex)
             {
-                this.OpenPort.Close();
+                if (this.OpenPort.IsOpen()) this.OpenPort.Close();
+                this.ReaderCancellation.Cancel();
                 this.Status = ConnectionStatus.Error;
                 this.SerialError?.Invoke(ex.Message);
-                return null;
+                return Array.Empty<byte>();
             }
         }
         public void Connect()
