@@ -111,6 +111,10 @@
     \def\projtype@supervisor{studentského projektu}
     \def\projtype@showthesisinfo{0}
 }
+\def\projtype@blank{1}
+\DeclareOption{skipblank}{
+    \def\projtype@blank{0}
+}
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions\relax
@@ -196,9 +200,11 @@
             Praha \IRokOdevzdani
         \end{center}
 
-        \newpage
+        \ifnum\projtype@blank>0
+            \newpage
 
-        \openright
+            \openright
+        \fi
 
         \pagestyle{plain}
         \hypersetup{pageanchor=true}

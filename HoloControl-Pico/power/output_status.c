@@ -13,3 +13,8 @@ void trigger_status(void)
     gpio_put(OUT_STA_ERR, counter < 1 * (G_mode & MODE_ERROR));
     counter = (counter + 1) & COUNTER_LOOP;
 }
+void hide_status(void) {
+    gpio_put(OUT_STA_MAN, 0);
+    gpio_put(OUT_STA_AUT, 0);
+    gpio_put(OUT_STA_ERR, 0);
+}
