@@ -58,11 +58,11 @@ namespace HoloControl.ViewModels
 
         private void ExecuteSimpleCommand(string parameter)
         {
-            // this.CurrentCommand += parameter + " ";
-            this.Sending = true;
+            this.CurrentCommand += parameter + " ";
+            /* this.Sending = true;
             byte[] sent = this.Connection.SendString(parameter);
             if (sent.Length > 0) this.AddToHistory(sent);
-            this.Sending = false;
+            this.Sending = false; */
         }
         private void ExectuteToggleCommand(string color)
         {
@@ -77,7 +77,7 @@ namespace HoloControl.ViewModels
         private void SendCommands()
         {
             this.Sending = true;
-            byte[] sent = this.Connection.SendString(this.CurrentCommand);
+            byte[] sent = this.Connection.SendString(this.CurrentCommand.Trim());
             if (sent.Length > 0)
             {
                 this.AddToHistory(sent);
