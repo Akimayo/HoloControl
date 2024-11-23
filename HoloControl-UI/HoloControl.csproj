@@ -98,6 +98,7 @@
 	  <None Remove="Resources\Images\play_pause_white.svg" />
 	  <None Remove="Resources\Images\steering_wheel.svg" />
 	  <None Remove="Resources\Images\steering_wheel_white.svg" />
+	  <None Remove="Resources\Images\storefront.svg" />
 	  <None Remove="Resources\Images\timer.svg" />
 	  <None Remove="Resources\Images\timer_white.svg" />
 	</ItemGroup>
