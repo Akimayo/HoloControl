@@ -25,5 +25,9 @@ namespace HoloControl.Views.Standard
             Task.Delay(1000);
             (sender as Editor).CursorPosition = e.NewTextValue.Length;
         }
+        private void PortPicker_Focused(object sender, FocusEventArgs e)
+        {
+            if (this.BindingContext is RootViewModel context) context.Connection.ReloadPorts();
+        }
     }
 }
