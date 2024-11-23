@@ -15,7 +15,7 @@
 		<ApplicationTitle>HoloControl</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.holocontrol</ApplicationId>
+		<ApplicationId>cz.mciesla.holocontrol</ApplicationId>
 		<ApplicationIdGuid>3c06d42f-ea57-4c32-a9c6-56cff6983bf9</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -29,7 +29,7 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<NeutralLanguage>en</NeutralLanguage>
-		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<GenerateAppInstallerFile>True</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
@@ -37,6 +37,7 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageCertificateKeyFile>HoloControl_TemporaryKey.pfx</PackageCertificateKeyFile>
+		<AppInstallerUri>https://update.mciesla.cz/HoloControl/</AppInstallerUri>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
