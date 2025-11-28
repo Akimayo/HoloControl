@@ -55,7 +55,7 @@ namespace HoloControl.Models
         }
         public partial bool IsOpen()
         {
-            return this._usbManager.DeviceList.ContainsValue(this._selectedDevice);
+            return this._usbManager.DeviceList.Values.Contains(this._selectedDevice);
         }
 
         public partial void Write(byte[] bytes, int offset, int length) => this._connection.BulkTransfer(this._write, bytes, length, 500);

@@ -1,155 +1,131 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFrameworks>net7.0-android;net7.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
-		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
-		<OutputType>Exe</OutputType>
-		<RootNamespace>HoloControl</RootNamespace>
-		<UseMaui>true</UseMaui>
-		<SingleProject>true</SingleProject>
-		<ImplicitUsings>enable</ImplicitUsings>
-
-		<!-- Display name -->
-		<ApplicationTitle>HoloControl</ApplicationTitle>
-
-		<!-- App Identifier -->
-		<ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-		<ApplicationIdGuid>3c06d42f-ea57-4c32-a9c6-56cff6983bf9</ApplicationIdGuid>
-
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
-
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-		<NeutralLanguage>en</NeutralLanguage>
-		<GenerateAppInstallerFile>True</GenerateAppInstallerFile>
-		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-		<GenerateTestArtifacts>True</GenerateTestArtifacts>
-		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<PackageCertificateKeyFile>HoloControl_TemporaryKey.pfx</PackageCertificateKeyFile>
-		<AppInstallerUri>https://update.mciesla.cz/HoloControl/</AppInstallerUri>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
-
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
-
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Fonts\B612-Italic.ttf" />
-	  <None Remove="Resources\Fonts\B612-Regular.ttf" />
-	  <None Remove="Resources\Fonts\B612Mono-Regular.ttf" />
-	  <None Remove="Resources\Images\cmd_check_square.svg" />
-	  <None Remove="Resources\Images\cmd_paper_plane_right.svg" />
-	  <None Remove="resources\images\cmd_pause_circle.svg" />
-	  <None Remove="Resources\Images\cmd_play_circle.svg" />
-	  <None Remove="resources\images\cmd_stop_circle.svg" />
-	  <None Remove="Resources\Images\cmd_usb.svg" />
-	  <None Remove="Resources\Images\cmd_warning_diamond.svg" />
-	  <None Remove="Resources\Images\cmd_x_square.svg" />
-	  <None Remove="Resources\Images\paper_plane.svg" />
-	  <None Remove="Resources\Images\paper_plane_white.svg" />
-	  <None Remove="Resources\Images\play_pause.svg" />
-	  <None Remove="Resources\Images\play_pause_white.svg" />
-	  <None Remove="Resources\Images\steering_wheel.svg" />
-	  <None Remove="Resources\Images\steering_wheel_white.svg" />
-	  <None Remove="Resources\Images\storefront.svg" />
-	  <None Remove="Resources\Images\timer.svg" />
-	  <None Remove="Resources\Images\timer_white.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Foldable" Version="7.0.92" />
-		<PackageReference Include="System.IO.Ports" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="KioskShell.xaml.cs">
-	    <DependentUpon>KioskShell.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Strings\Standard.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Standard.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="StandardShell.xaml.cs">
-	    <DependentUpon>StandardShell.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\Kiosk\MainPage.xaml.cs">
-	    <DependentUpon>%(Filename)</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Resources\Strings\Standard.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Standard.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="KioskShell.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Kiosk\MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Extensions.Configuration" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Extensions.Logging" Version="7.0.0" />
-	</ItemGroup>
-
+  <PropertyGroup>
+    <!--<TargetFrameworks>net9.0-android;net9.0-maccatalyst</TargetFrameworks>-->
+    <TargetFrameworks>net9.0-android</TargetFrameworks> <!-- Removed Mac Catalyst as a build target-->
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+    <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+    <!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+    
+    <OutputType>Exe</OutputType>
+    <RootNamespace>HoloControl</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Display name -->
+    <ApplicationTitle>HoloControl</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+    <ApplicationIdGuid>3c06d42f-ea57-4c32-a9c6-56cff6983bf9</ApplicationIdGuid>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <PackageCertificateKeyFile>HoloControl_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppInstallerUri>https://update.mciesla.cz/HoloControl/</AppInstallerUri>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <!--
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-maccatalyst|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-maccatalyst|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
+    <ApplicationId>cz.mciesla.holocontrol</ApplicationId>
+  </PropertyGroup>
+  -->
+  <ItemGroup>
+    <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
+    <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Fonts\B612-Italic.ttf" />
+    <None Remove="Resources\Fonts\B612-Regular.ttf" />
+    <None Remove="Resources\Fonts\B612Mono-Regular.ttf" />
+    <None Remove="Resources\Images\cmd_check_square.svg" />
+    <None Remove="Resources\Images\cmd_paper_plane_right.svg" />
+    <None Remove="resources\images\cmd_pause_circle.svg" />
+    <None Remove="Resources\Images\cmd_play_circle.svg" />
+    <None Remove="resources\images\cmd_stop_circle.svg" />
+    <None Remove="Resources\Images\cmd_usb.svg" />
+    <None Remove="Resources\Images\cmd_warning_diamond.svg" />
+    <None Remove="Resources\Images\cmd_x_square.svg" />
+    <None Remove="Resources\Images\paper_plane.svg" />
+    <None Remove="Resources\Images\paper_plane_white.svg" />
+    <None Remove="Resources\Images\play_pause.svg" />
+    <None Remove="Resources\Images\play_pause_white.svg" />
+    <None Remove="Resources\Images\steering_wheel.svg" />
+    <None Remove="Resources\Images\steering_wheel_white.svg" />
+    <None Remove="Resources\Images\timer.svg" />
+    <None Remove="Resources\Images\timer_white.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.11" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.111" />
+    <PackageReference Include="Microsoft.Maui.Controls.Foldable" Version="9.0.120" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.11" />
+    <PackageReference Update="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="KioskShell.xaml.cs">
+      <DependentUpon>KioskShell.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Strings\Standard.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Standard.resx</DependentUpon>
+    </Compile>
+    <Compile Update="StandardShell.xaml.cs">
+      <DependentUpon>StandardShell.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Kiosk\MainPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\Standard.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Standard.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <MauiXaml Update="KioskShell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\Kiosk\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+  </ItemGroup>
 </Project>

@@ -1,28 +1,27 @@
-﻿namespace HoloControl
+﻿using Microsoft.Maui.ApplicationModel;
+namespace HoloControl
 {
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
-
+        }
+        protected override Window CreateWindow(IActivationState activationState)
+        {
             string[] args = Environment.GetCommandLineArgs();
-
-            MainPage = args.Contains("kiosk") ? new KioskShell() : new StandardShell();
+            return new Window(args.Contains("kiosk") ? new KioskShell() : new StandardShell());
         }
         public static void HandleAppActions(AppAction appAction)
         {
-            App.Current.Dispatcher.Dispatch(() =>
+            Page page = appAction.Id switch
             {
-                Page page = appAction.Id switch
-                {
-                    // "mode_standard" => new Views.Standard.MainPage(),
-                    "mode_kiosk" => new Views.Kiosk.MainPage(),
-                    _ => default(Page)
-                };
+                "mode_standard" => new Views.Standard.MainPage(),
+                "mode_kiosk" => new Views.Kiosk.MainPage(),
+                _ => default
+            };
 
-                if (page != null) Application.Current.Windows[0].Page = page;
-            });
+            if (page != null) Current.Windows[0].Page = page;
         }
     }
 }

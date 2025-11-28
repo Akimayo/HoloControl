@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Foldable;
 using Microsoft.Maui.Foldable;
 
 namespace HoloControl
@@ -20,8 +19,8 @@ namespace HoloControl
                 })
                 .ConfigureEssentials(essentials =>
                 {
-                    essentials//.AddAppAction("mode_standard", "Standard Mode")
-                              .AddAppAction("mode_kiosk", "Kiosk Mode", icon: "Images/storefront.svg") // FIXME: The path does not work
+                    essentials.AddAppAction("mode_standard", "Standard Mode", icon: "steering_wheel")
+                              .AddAppAction("mode_kiosk", "Kiosk Mode", icon: "storefront")
                               .OnAppAction(App.HandleAppActions);
                 });
 
