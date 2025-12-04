@@ -5,18 +5,20 @@
 
 char buffer_index = 0;
 char buffer[BUFFER_LENGTH];
-char load_serial(void)
+void load_serial(void)
 {
     int c;
     while (1)
     {
         c = getchar_timeout_us(!(G_auto_run & 1) * 100);
-        if (c != PICO_ERROR_TIMEOUT && buffer_index < BUFFER_LENGTH)
+        if (c != PICO_ERROR_TIMEOUT && buffer_index < BUFFER_LENGTH) {
             buffer[buffer_index++] = c;
+            if (buffer_index >= BUFFER_LENGTH) execute();
+        }
         else
             break;
     }
-    return buffer_index;
+    // if (buffer_index >= BUFFER_LENGTH) execute();
 }
 
 char execute(void)
