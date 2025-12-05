@@ -14,6 +14,7 @@
             <converters:ConnectionStatusBooleanConverter x:Key="ConnectionStatusBoolean" />
             <converters:BoolNegateConverter x:Key="NegateConverter" />
             <vm:RootViewModel x:Key="Context" />
+            <converters:ConsoleHeightConverter x:Key="ConsoleHeight" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -78,8 +79,10 @@
                         TextChanged="Editor_TextChanged" />
                 <CollectionView Grid.Row="2"
                                 Grid.ColumnSpan="2"
-                                Margin="0,0,0,48"
                                 ItemsSource="{x:Binding HistoryList}"
+                                ItemsUpdatingScrollMode="KeepLastItemInView"
+                                HeightRequest="{x:Binding Source={x:RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}}, Path=Height, Converter={StaticResource ConsoleHeight}}"
+                                VerticalOptions="End"
                                 x:Name="History">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="vm:HistoryItem">
@@ -91,7 +94,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <ProgressBar IsEnabled="{x:Binding Sending}" IsVisible="{x:Binding Sending}" ProgressColor="{StaticResource Secondary}" Grid.Row="3" Margin="0,-44,0,48" Grid.ColumnSpan="2" />
                 <Entry FontFamily="B612 Mono"
                        Placeholder="HEX..." 
                        TextColor="{StaticResource White}" 
@@ -108,6 +110,7 @@
                              Grid.Row="4"
                              Grid.Column="1"
                              Command="{x:Binding Send}" />
+                <ActivityIndicator Grid.Row="4" Grid.Column="1" IsRunning="True" IsVisible="{x:Binding Sending}" />
             </Grid>
         </foldable:TwoPaneView.Pane1>
         <foldable:TwoPaneView.Pane2>
