@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.ApplicationModel;
-namespace HoloControl
+﻿namespace HoloControl
 {
     public partial class App : Application
     {
@@ -16,8 +15,8 @@ namespace HoloControl
         {
             Page page = appAction.Id switch
             {
-                "mode_standard" => new Views.Standard.MainPage(),
-                "mode_kiosk" => new Views.Kiosk.MainPage(),
+                "mode_standard" => new StandardShell(),
+                "mode_kiosk" => new KioskShell(),
                 _ => default
             };
 
