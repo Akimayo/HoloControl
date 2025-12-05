@@ -10,17 +10,17 @@
 #define OUT_BZR 6
 
 // Status
-#define OUT_STA_ERR 10 // RGB LED Red
-#define OUT_STA_AUT 11 // RGB LED Green
-#define OUT_STA_MAN 12 // RGB LED Blue
+#define OUT_STA_ERR 12 // RGB LED Red
+#define OUT_STA_AUT 10 // RGB LED Green
+#define OUT_STA_MAN 11 // RGB LED Blue
 
 // TTL
 #define OUT_TTL 13 // External laser controller
 
 // Manual Color Select
 #define IN_COL 19
-#define OUT_COL_R 16
-#define OUT_COL_G 17
+#define OUT_COL_R 17
+#define OUT_COL_G 16
 #define OUT_COL_B 18
 #define OUT_COL_W 27 // Finishing LED
 #define OUT_COL_E 26 // External laser

@@ -176,11 +176,7 @@ int main()
         if (!(cycle & CONTROL_BUZZER_EVERY))
             trigger_buzzer();
         // - Serial comms
-        if (load_serial() == BUFFER_LENGTH)
-        {
-            if (execute())
-                G_mode = MODE_ERROR;
-        }
+        load_serial();
         // END
 
         cycle = (cycle + 1) & 0xFFFFFF;
