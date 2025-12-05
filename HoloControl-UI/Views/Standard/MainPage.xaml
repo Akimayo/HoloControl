@@ -58,13 +58,22 @@
                             TitleColor="{StaticResource White}" 
                             BackgroundColor="{StaticResource Gray600}"
                             HorizontalOptions="Fill" />
-                    <Button Text="{x:Static loc:Standard.Port_Connect}" Grid.Column="2" Command="{Binding Connect}" />
+                    <HorizontalStackLayout Grid.Column="2">
+                        <Button Text="{x:Static loc:Standard.Port_Connect}" Command="{Binding Connect}" />
+                        <ImageButton Source="broom.png"
+                                     SemanticProperties.Description="{x:Static loc:Standard.Console_Clear}" 
+                                     BackgroundColor="Transparent"
+                                     IsEnabled="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}"
+                                     Padding="12"
+                                     Command="{x:Binding Clear}"/>
+                    </HorizontalStackLayout>
                     <Label Text="{x:Static loc:Standard.Port_Status_Title}" Grid.Column="4" />
                     <HorizontalStackLayout Grid.Column="5" VerticalOptions="Fill" ToolTipProperties.Text="{Binding Connection.Board}">
                         <Ellipse Fill="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}" 
                                  WidthRequest="12"
                                  HeightRequest="12"
-                                 VerticalOptions="Center" />
+                                 VerticalOptions="Center"
+                                 Margin="0,2,0,0"/>
                         <Label Text="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Grid>
@@ -96,7 +105,7 @@
                 </CollectionView>
                 <Entry FontFamily="B612 Mono"
                        Placeholder="HEX..." 
-                       TextColor="{StaticResource White}" 
+                       TextColor="{StaticResource White}"
                        Text="{x:Binding CurrentCommand, Mode=TwoWay}" 
                        Grid.Row="4" 
                        Grid.Column="0"

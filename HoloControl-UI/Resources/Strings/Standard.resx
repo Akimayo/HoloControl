@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions.Kiosk" xml:space="preserve">
+    <value>Kiosk Mode</value>
+    <comment>Title of the app action which starts HoloControl in kiosk mode</comment>
+  </data>
+  <data name="Actions.Standard" xml:space="preserve">
+    <value>Standard Mode</value>
+    <comment>Title of the app action which starts HoloControl in standard mode</comment>
+  </data>
+  <data name="Console.Clear" xml:space="preserve">
+    <value>Clear output window</value>
+    <comment>Button to clean the console</comment>
+  </data>
   <data name="Console.Send" xml:space="preserve">
     <value>Send</value>
     <comment>Button to send the command</comment>

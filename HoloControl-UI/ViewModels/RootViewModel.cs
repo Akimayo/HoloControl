@@ -5,7 +5,6 @@ using System.Windows.Input;
 using HoloControl.Models.Form;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace HoloControl.ViewModels
 {
@@ -36,6 +35,7 @@ namespace HoloControl.ViewModels
         public ICommand TimeResetCommand { get; }
         public ICommand Connect { get; }
         public ICommand Send { get; }
+        public ICommand Clear { get; }
         #endregion
 
         private bool CanSend(string _) => this.Connection.Status == ConnectionStatus.Connected && !this.Sending;
@@ -54,6 +54,7 @@ namespace HoloControl.ViewModels
             this.TimingCommand = new RelayCommand<string>(this.ExecuteTimingCommand, this.CanSend);
             this.Connect = new RelayCommand(this.Connection.Connect);
             this.Send = new RelayCommand(this.SendCommands, this.CanSend);
+            this.Clear = new RelayCommand(this.HistoryList.Clear, this.CanSend);
         }
 
         private void ExecuteSimpleCommand(string parameter)

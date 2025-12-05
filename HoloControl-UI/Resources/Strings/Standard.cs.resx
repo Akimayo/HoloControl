@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions.Kiosk" xml:space="preserve">
+    <value>Režim kiosku</value>
+  </data>
+  <data name="Actions.Standard" xml:space="preserve">
+    <value>Standardní režim</value>
+  </data>
+  <data name="Console.Clear" xml:space="preserve">
+    <value>Vyprázdnit výstupní okno</value>
+  </data>
   <data name="Console.Send" xml:space="preserve">
     <value>Odeslat</value>
     <comment>Button to send the command</comment>

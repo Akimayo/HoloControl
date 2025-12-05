@@ -61,6 +61,33 @@ namespace HoloControl.Resources.Strings {
         }
         
         /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný Kiosk Mode.
+        /// </summary>
+        internal static string Actions_Kiosk {
+            get {
+                return ResourceManager.GetString("Actions.Kiosk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný Standard Mode.
+        /// </summary>
+        internal static string Actions_Standard {
+            get {
+                return ResourceManager.GetString("Actions.Standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný Clear output window.
+        /// </summary>
+        internal static string Console_Clear {
+            get {
+                return ResourceManager.GetString("Console.Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledá lokalizovaný řetězec podobný Send.
         /// </summary>
         internal static string Console_Send {
