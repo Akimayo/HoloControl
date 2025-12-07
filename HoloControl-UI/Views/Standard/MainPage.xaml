@@ -9,11 +9,11 @@
              x:DataType="vm:RootViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <vm:RootViewModel x:Key="Context" />
             <converters:ConnectionStatusNameConverter x:Key="ConnectionStatusName" />
             <converters:ConnectionStatusColorConverter x:Key="ConnectionStatusColor" />
             <converters:ConnectionStatusBooleanConverter x:Key="ConnectionStatusBoolean" />
             <converters:BoolNegateConverter x:Key="NegateConverter" />
-            <vm:RootViewModel x:Key="Context" />
             <converters:ConsoleHeightConverter x:Key="ConsoleHeight" />
         </ResourceDictionary>
     </ContentPage.Resources>

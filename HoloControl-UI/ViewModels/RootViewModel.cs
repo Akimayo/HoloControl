@@ -60,10 +60,6 @@ namespace HoloControl.ViewModels
         protected void ExecuteSimpleCommand(string parameter)
         {
             this.CurrentCommand += parameter + " ";
-            /* this.Sending = true;
-            byte[] sent = this.Connection.SendString(parameter);
-            if (sent.Length > 0) this.AddToHistory(sent);
-            this.Sending = false; */
         }
         protected void ExectuteToggleCommand(string color)
         {
@@ -91,7 +87,6 @@ namespace HoloControl.ViewModels
         {
             this.History += lines;
             foreach (string l in lines.Split('\n')) if (!string.IsNullOrWhiteSpace(l)) this.HistoryList.Add(new(l));
-            //while (this.HistoryList.Count > 8) this.HistoryList.RemoveAt(0);
         }
         private void AddToHistory(byte[] command)
         {
