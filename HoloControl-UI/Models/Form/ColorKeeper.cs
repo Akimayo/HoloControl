@@ -2,13 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace HoloControl.Models.Form
 {
     internal class ColorKeeper : IDictionary<string, string>, INotifyPropertyChanged
     {
-        const string RGB = "RGB", EXTERNAL = "External", FINISHING = "Finishing";
+        internal const string RGB = "RGB", EXTERNAL = "External", FINISHING = "Finishing";
         public string this[string key]
         {
             get => key switch

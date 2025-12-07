@@ -7,7 +7,9 @@ namespace HoloControl.Views.Xaml
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ConnectionStatus status) return status == ConnectionStatus.Connected;
+            if (value is ConnectionStatus status)
+                if (parameter is bool xor) return xor ^ (status == ConnectionStatus.Connected);
+                else return status == ConnectionStatus.Connected;
             else throw new ArgumentException("Value must be of type ConnectionStatus", nameof(value));
         }
 

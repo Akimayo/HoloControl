@@ -38,8 +38,8 @@ namespace HoloControl.ViewModels
         public ICommand Clear { get; }
         #endregion
 
-        private bool CanSend(string _) => this.Connection.Status == ConnectionStatus.Connected && !this.Sending;
-        private bool CanSend() => this.Connection.Status == ConnectionStatus.Connected && !this.Sending;
+        protected bool CanSend(string _) => this.Connection.Status == ConnectionStatus.Connected && !this.Sending;
+        protected bool CanSend() => this.Connection.Status == ConnectionStatus.Connected && !this.Sending;
 
         public RootViewModel()
         {
@@ -54,10 +54,10 @@ namespace HoloControl.ViewModels
             this.TimingCommand = new RelayCommand<string>(this.ExecuteTimingCommand, this.CanSend);
             this.Connect = new RelayCommand(this.Connection.Connect);
             this.Send = new RelayCommand(this.SendCommands, this.CanSend);
-            this.Clear = new RelayCommand(this.HistoryList.Clear, this.CanSend);
+            this.Clear = new RelayCommand(() => { this.HistoryList.Clear(); this.History = ""; }, this.CanSend);
         }
 
-        private void ExecuteSimpleCommand(string parameter)
+        protected void ExecuteSimpleCommand(string parameter)
         {
             this.CurrentCommand += parameter + " ";
             /* this.Sending = true;
@@ -65,17 +65,17 @@ namespace HoloControl.ViewModels
             if (sent.Length > 0) this.AddToHistory(sent);
             this.Sending = false; */
         }
-        private void ExectuteToggleCommand(string color)
+        protected void ExectuteToggleCommand(string color)
         {
             this.ExecuteSimpleCommand(this.Colors[color]);
         }
-        private void ExecuteTimingCommand(string time)
+        protected void ExecuteTimingCommand(string time)
         {
             this.ExecuteSimpleCommand(this.Timings[time]);
         }
 
 
-        private void SendCommands()
+        protected void SendCommands()
         {
             this.Sending = true;
             byte[] sent = this.Connection.SendString(this.CurrentCommand.Trim());
@@ -87,7 +87,7 @@ namespace HoloControl.ViewModels
             this.Sending = false;
         }
 
-        private void AddToHistory(string lines) // For serial replies
+        protected void AddToHistory(string lines) // For serial replies
         {
             this.History += lines;
             foreach (string l in lines.Split('\n')) if (!string.IsNullOrWhiteSpace(l)) this.HistoryList.Add(new(l));
@@ -106,6 +106,6 @@ namespace HoloControl.ViewModels
             this.HistoryList.Add(entry);
         }
 
-        private void Update([CallerMemberName] string propertyName = null) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected void Update([CallerMemberName] string propertyName = null) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

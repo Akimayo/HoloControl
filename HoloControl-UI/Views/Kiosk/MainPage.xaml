@@ -1,41 +1,218 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HoloControl.Views.Kiosk.MainPage">
+             xmlns:vm="clr-namespace:HoloControl.ViewModels"
+             xmlns:converter="clr-namespace:HoloControl.Views.Xaml"
+             x:Class="HoloControl.Views.Kiosk.MainPage"
+             x:DataType="vm:KioskViewModel"
+             Background="{StaticResource Black}">
+    <ContentPage.Resources>
+        <vm:KioskViewModel x:Key="Context" />
+        <converter:BoolNegateConverter x:Key="Negate" />
+        <converter:ConnectionStatusBooleanConverter x:Key="ConnectionStatus" />
+        <converter:ConnectionStatusNameConverter x:Key="ConnectionStatusName" />
+        <converter:ConnectionStatusColorConverter x:Key="ConnectionStatusColor" />
+        <converter:BooleanGradientConverter x:Key="Gradient" />
+        <x:Boolean x:Key="True">True</x:Boolean>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="B612" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid BindingContext="{StaticResource Context}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.ColumnSpan="3"
+              Grid.RowSpan="2"
+              IsEnabled="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}}"
+              IsVisible="{x:Binding IsManualMode, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+                <RowDefinition Height="*" />
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="TextColor" Value="{StaticResource Gray400}" />
+                    <Setter Property="FontSize" Value="Large" />
+                    <Setter Property="FontFamily" Value="B612" />
+                </Style>
+                <x:Double x:Key="GradientOffsetOff">0.8</x:Double>
+            </Grid.Resources>
+            <Label Text="Manual Mode"
+                   FontSize="Header"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="5"/>
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
+            <Button Text="Red Laser"
+                    Command="{x:Binding ToggleRedCommand, Mode=OneTime}"
+                    Grid.Row="3"
+                    Grid.RowSpan="3"
+                    Grid.Column="1">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="{StaticResource Gray900}" Offset="{x:Binding Colors.Red, Mode=OneWay, Converter={StaticResource Gradient}, ConverterParameter={StaticResource GradientOffsetOff}}" />
+                        <GradientStop Color="Red" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Text="Green Laser"
+                    Command="{x:Binding ToggleGreenCommand, Mode=OneTime}"
+                    Grid.Row="7"
+                    Grid.RowSpan="3"
+                    Grid.Column="1">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="{StaticResource Gray900}" Offset="{x:Binding Colors.Green, Mode=OneWay, Converter={StaticResource Gradient}, ConverterParameter={StaticResource GradientOffsetOff}}" />
+                        <GradientStop Color="Green" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Text="Blue Laser"
+                    Command="{x:Binding ToggleBlueCommand, Mode=OneTime}"
+                    Grid.Row="3"
+                    Grid.RowSpan="3"
+                    Grid.Column="3">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="{StaticResource Gray900}" Offset="{x:Binding Colors.Blue, Mode=OneWay, Converter={StaticResource Gradient}, ConverterParameter={StaticResource GradientOffsetOff}}" />
+                        <GradientStop Color="Blue" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Text="External Laser"
+                    Command="{x:Binding ToggleExternalCommand, Mode=OneTime}"
+                    Grid.Row="7"
+                    Grid.RowSpan="3"
+                    Grid.Column="3">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="{StaticResource Gray900}" Offset="{x:Binding Colors.External, Mode=OneWay, Converter={StaticResource Gradient}, ConverterParameter={StaticResource GradientOffsetOff}}" />
+                        <GradientStop Color="Goldenrod" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Text="Finishing LED"
+                    Command="{x:Binding ToggleFinishingCommand, Mode=OneTime}"
+                    Grid.Row="5"
+                    Grid.RowSpan="3"
+                    Grid.Column="5">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="{StaticResource Gray900}" Offset="{x:Binding Colors.Finishing, Mode=OneWay, Converter={StaticResource Gradient}, ConverterParameter={StaticResource GradientOffsetOff}}" />
+                        <GradientStop Color="LightBlue" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid Grid.ColumnSpan="3"
+              Grid.RowSpan="2"
+              IsEnabled="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}}"
+              IsVisible="{x:Binding IsManualMode, Mode=OneWay, Converter={StaticResource Negate}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="11*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="Automatic Mode"
+                   FontSize="Header"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="1"
+                   Grid.Row="1" />
+            <Label Text="Kiosk mode is not yet implemented for Automatic Mode"
+                   Grid.Column="1"
+                   Grid.Row="3" />
+        </Grid>
+        <HorizontalStackLayout Grid.Row="1"
+                               Spacing="16"
+                               Padding="16,0"
+                               VerticalOptions="End"
+                               HeightRequest="64"
+                               BackgroundColor="{StaticResource Blue100Accent}"
+                               IsVisible="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}, ConverterParameter={StaticResource True}}">
+            <Label Text="Port"
+                   TextColor="{StaticResource White}"
+                   VerticalOptions="Center"/>
+            <Picker ItemsSource="{x:Binding Connection.AvailablePorts, Mode=OneWay}"
+                    Focused="Picker_Focused"
+                    SelectedIndexChanged="Picker_SelectedIndexChanged"
+                    SelectedIndex="{x:Binding Connection.SelectedPort, Mode=OneWayToSource}"
+                    TextColor="{StaticResource White}"
+                    TitleColor="{StaticResource White}"
+                    BackgroundColor="{StaticResource Gray600}"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        <VerticalStackLayout Grid.Column="2"
+                             Grid.Row="1"
+                             Padding="16,16,0,0"
+                             BackgroundColor="{StaticResource Gray900}">
+            <HorizontalStackLayout HorizontalOptions="Fill" Spacing="360">
+                <Label Text="Output"
+                   TextColor="{StaticResource White}" />
+                <ImageButton Source="broom.png"
+                             Command="{x:Binding Clear, Mode=OneTime}"
+                             BackgroundColor="Transparent"
+                             IsEnabled="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}}"
+                             Padding="12"
+                             Margin="24,-12,0,0"
+                             HeightRequest="12"/>
+            </HorizontalStackLayout>
+            <Editor Text="{x:Binding History, Mode=OneWay}"
+                    IsReadOnly="True"
+                    TextColor="{StaticResource Gray400}"
+                    FontFamily="B612 Mono"
+                    HeightRequest="120"
+                    WidthRequest="480"
+                    x:Name="History" />
         </VerticalStackLayout>
-    </ScrollView>
+        <HorizontalStackLayout Grid.Column="2"
+                               VerticalOptions="Start"
+                               HorizontalOptions="End"
+                               Padding="32,8"
+                               IsVisible="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}, ConverterParameter={StaticResource True}}">
+            <Ellipse Fill="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}"
+             WidthRequest="12"
+             HeightRequest="12"
+             VerticalOptions="Center"
+             Margin="0,-2,0,0"/>
+            <Label Text="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" TextColor="White" />
+        </HorizontalStackLayout>
+    </Grid>
 
 </ContentPage>

@@ -1,24 +1,33 @@
-﻿namespace HoloControl.Views.Kiosk
+﻿using HoloControl.ViewModels;
+
+namespace HoloControl.Views.Kiosk
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
+            if (this.History.BindingContext is RootViewModel vm) vm.PropertyChanged += ScrollHistory;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void ScrollHistory(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            count++;
+            if (e.PropertyName == nameof(RootViewModel.History))
+            {
+                this.History.CursorPosition = this.History.Text.Length;
+                this.History.Focus();
+            }
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        private void Picker_Focused(object sender, FocusEventArgs e)
+        {
+            if (sender is Element elmt && elmt.BindingContext is RootViewModel context) context.Connection.ReloadPorts();
+        }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender is Picker picker && picker.BindingContext is RootViewModel context && picker.SelectedIndex != -1)
+                context.Connect.Execute(null);
         }
     }
 }
