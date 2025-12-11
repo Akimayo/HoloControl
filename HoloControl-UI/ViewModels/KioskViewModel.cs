@@ -34,23 +34,39 @@ namespace HoloControl.ViewModels
             this.ToggleFinishingCommand = new RelayCommand(() => { this.Colors.Finishing = !this.Colors.Finishing; this.ExectuteToggleCommand(ColorKeeper.FINISHING); this.SendCommands(); }, this.CanSend);
         }
 
+        private bool colorsRequested = false, timingsRequested = false;
         private void ParseResponse(string response)
         {
             const string KWD_STATUS = "Status",
                          KWD_COLOR = "olor", // This is pulling double duty; `get_current_color` returns "Color" with upper-case C, but `set_manual_colors` returns lower-case
-                         KWD_LED = "Finishing LED";
+                         KWD_LED = "Finishing LED",
+                         KWD_TIME = "time [ms]";
+            bool processedRequestedTimings = false;
             foreach (string r in response.Split('\n'))
             {
                 if (string.IsNullOrWhiteSpace(r)) continue;
                 int c = r.IndexOf(':');
                 if (r[(c - KWD_STATUS.Length)..c] == KWD_STATUS)
                 {
-                    this.IsManualMode = r[(c + 2)..^1] == "manual";
-                    if (this.IsManualMode)
+                    bool isManualMode = r[(c + 2)..^1] == "manual";
+
+                    // When the board is switched to a new mode and we are learning of the change now, `isManualMode != this.IsManualMode` in the first pass.
+                    // Therefore we get the relevant control information from the board itself once.
+                    if (isManualMode && !this.IsManualMode)
                     {
+                        // Get state of colors
+                        this.colorsRequested = true;
                         this.Connection.SendString("04000000"); // This does not return the state of the finishing LED,...
                         this.Colors.External = false;           // ...so we just set it to off as this should be the case anyways.
                     }
+                    else if (!isManualMode && this.IsManualMode)
+                    {
+                        // Get timings
+                        this.timingsRequested = true;
+                        this.Connection.SendString("20000000");
+                    }
+                    // Now we store the new mode and propagate it to the rest of the app
+                    this.IsManualMode = isManualMode;
                 }
                 else if (r[(c - KWD_COLOR.Length)..c] == KWD_COLOR)
                 {
@@ -58,14 +74,56 @@ namespace HoloControl.ViewModels
                     this.Colors.Green = r[c + 3] == 'G';
                     this.Colors.Blue = r[c + 4] == 'B';
                     this.Colors.External = r[c + 5] == 'E';
-                    this.AddToHistory(r);
+
+                    // Unless the check was requested automatically during mode change, add the response to history
+                    if (!this.colorsRequested) this.AddToHistory(r);
+                    else this.colorsRequested = false;
                 }
                 else if (r[(c - KWD_LED.Length)..c] == KWD_LED)
                 {
                     this.Colors.Finishing = r[c + 3] == 'N'; // `set_finishing_power` gives either "ON" or "OFF", so checking the second character is enough
                     this.AddToHistory(r);
                 }
+                else if (r[(c - KWD_TIME.Length)..c] == KWD_TIME && uint.TryParse(r[(c + 2)..], out uint timeMs))
+                {
+                    // Convert time from milliseconds to seconds
+                    float time = timeMs / 1e3f;
+                    // Exposition, waiting and finishing time have the same format and should be distinguishable by the seventh character in front of 'time'. For exposition
+                    // times, this is the last character of the color name, and for finishing and waiting it's just somewhere in the middle of the word, but still enough to
+                    // distinguish.
+                    switch (r[c - KWD_TIME.Length - 7])
+                    {
+                        case 'd': // Red
+                            this.Timings.RedTime = time;
+                            break;
+                        case 'n': // Green
+                            this.Timings.GreenTime = time;
+                            break;
+                        case 'e': // Blue
+                            this.Timings.BlueTime = time;
+                            break;
+                        case 'l': // External
+                            this.Timings.ExternalTime = time;
+                            break;
+                        case 'i': // Finishing
+                            this.Timings.FinishingTime = time;
+                            break;
+                        case 'a': // Waiting
+                            this.Timings.WaitTime = time;
+                            break;
+                    }
+                    // Unless the check was requested automatically during mode change, add  the response to history
+                    if (!this.timingsRequested)
+                    {
+                        this.AddToHistory(r);
+                        processedRequestedTimings = true;
+                    }
+                }
+                else this.AddToHistory(r + " (parsing failed)"); // Fallback when parsing fails
             }
+
+            // Reset `this.timingsRequested` if they were processed in this batch
+            if (processedRequestedTimings) this.timingsRequested = false;
         }
 
         private void CheckModeStatus(object sender, EventArgs e)
