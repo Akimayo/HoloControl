@@ -1,15 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using HoloControl.Models;
 using HoloControl.Models.Form;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace HoloControl.ViewModels
 {
     internal class KioskViewModel : RootViewModel
     {
-        public bool IsManualMode { get; private set; } = true;
-        public bool IsRunning { get; private set; } = false;
+        private bool _isManualMode = true, _isRunning = false, _isPaused = false;
+        public bool IsManualMode { get => this._isManualMode; private set { this._isManualMode = value; this.Update(); } }
+        public bool IsRunning { get => this._isRunning; private set { this._isRunning = value; this.Update(); } }
+        public bool IsPaused { get => this._isPaused; private set { this._isPaused = value; this.Update(); } }
         private readonly IDispatcherTimer StatusCheckTimer = Dispatcher.GetForCurrentThread().CreateTimer();
+        private readonly IDispatcherTimer ExpositionTimer = Dispatcher.GetForCurrentThread().CreateTimer();
+        private readonly Stopwatch ExpositionStopwatch = new();
 
         #region Commands
         public ICommand ToggleRedCommand { get; }
@@ -17,6 +22,9 @@ namespace HoloControl.ViewModels
         public ICommand ToggleBlueCommand { get; }
         public ICommand ToggleExternalCommand { get; }
         public ICommand ToggleFinishingCommand { get; }
+        public ICommand StartCommand { get; }
+        public ICommand PauseCommand { get; }
+        public ICommand StopCommand { get; }
         #endregion
 
         public KioskViewModel() : base()
@@ -26,12 +34,53 @@ namespace HoloControl.ViewModels
             this.Connection.SerialResponse -= AddToHistory; // Remove the default handler, writing to history to be handled by `ParseResponse` to avoid filling history with status checks
             this.StatusCheckTimer.Interval = TimeSpan.FromSeconds(1);
             this.StatusCheckTimer.Tick += CheckModeStatus;
+            this.ExpositionTimer.IsRepeating = false;
+            this.ExpositionTimer.Tick += (s, e) =>
+            {
+                this.IsRunning = false;
+                this.ExpositionStopwatch.Stop();
+                this.ExpositionStopwatch.Reset();
+            };
 
             this.ToggleRedCommand = new RelayCommand(() => { this.Colors.Red = !this.Colors.Red; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
             this.ToggleGreenCommand = new RelayCommand(() => { this.Colors.Green = !this.Colors.Green; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
             this.ToggleBlueCommand = new RelayCommand(() => { this.Colors.Blue = !this.Colors.Blue; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
             this.ToggleExternalCommand = new RelayCommand(() => { this.Colors.External = !this.Colors.External; this.ExectuteToggleCommand(ColorKeeper.EXTERNAL); this.SendCommands(); }, this.CanSend);
             this.ToggleFinishingCommand = new RelayCommand(() => { this.Colors.Finishing = !this.Colors.Finishing; this.ExectuteToggleCommand(ColorKeeper.FINISHING); this.SendCommands(); }, this.CanSend);
+            this.StartCommand = new RelayCommand(() =>
+            {
+                if (this.IsPaused)
+                    // If the exposition has been paused, subtract the already elapsed time from total and tack on waiting time
+                    this.ExpositionTimer.Interval = this.ExpositionTimer.Interval - this.ExpositionStopwatch.Elapsed + TimeSpan.FromSeconds(this.Timings.WaitTime);
+                else
+                    // If this is a fresh exposure, set the total time needed for the exposure
+                    this.ExpositionTimer.Interval = TimeSpan.FromSeconds(this.Timings.GetTotalTime());
+                this.IsRunning = true;
+                this.IsPaused = false;
+                this.ExecuteSimpleCommand("18000000");
+                this.SendCommands();
+                this.ExpositionTimer.Start();
+                this.ExpositionStopwatch.Restart();
+            });
+            this.PauseCommand = new RelayCommand(() =>
+            {
+                this.IsRunning = false;
+                this.IsPaused = true;
+                this.ExecuteSimpleCommand("19000000");
+                this.SendCommands();
+                this.ExpositionTimer.Stop();
+                this.ExpositionStopwatch.Stop();
+            });
+            this.StopCommand = new RelayCommand(() =>
+            {
+                this.IsRunning = false;
+                this.IsPaused = false;
+                this.ExecuteSimpleCommand("1A000000");
+                this.SendCommands();
+                this.ExpositionTimer.Stop();
+                this.ExpositionStopwatch.Stop();
+                this.ExpositionStopwatch.Reset();
+            });
         }
 
         private bool colorsRequested = false, timingsRequested = false;
@@ -63,7 +112,7 @@ namespace HoloControl.ViewModels
                     {
                         // Get timings
                         this.timingsRequested = true;
-                        this.Connection.SendString("20000000");
+                        this.Connection.SendString("14000000");
                     }
                     // Now we store the new mode and propagate it to the rest of the app
                     this.IsManualMode = isManualMode;

@@ -46,6 +46,12 @@ namespace HoloControl.Models.Form
         {
             for (int i = 0; i < 6; i++) this.state[i] = 0;
         }
+        internal float GetTotalTime()
+        {
+            float max = 0;
+            for (int i = 1; i < 5; i++) if (state[i] > max) max = state[i];
+            return max + state[0] + state[5];
+        }
 
         private void Update(string property)
         {
