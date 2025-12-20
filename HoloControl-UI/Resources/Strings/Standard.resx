@@ -273,4 +273,8 @@
     <value>Port</value>
     <comment>Title of the Port section</comment>
   </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>s</value>
+    <comment>Shortcut for seconds, unit of time</comment>
+  </data>
 </root>

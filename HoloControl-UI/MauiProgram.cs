@@ -19,8 +19,8 @@ namespace HoloControl
                 })
                 .ConfigureEssentials(essentials =>
                 {
-                    essentials.AddAppAction("mode_standard", "Standard Mode", icon: "steering_wheel")
-                              .AddAppAction("mode_kiosk", "Kiosk Mode", icon: "storefront")
+                    essentials.AddAppAction("mode_standard", Resources.Strings.Standard.Actions_Standard, icon: "steering_wheel")
+                              .AddAppAction("mode_kiosk", Resources.Strings.Standard.Actions_Kiosk, icon: "storefront")
                               .OnAppAction(App.HandleAppActions);
                 });
 

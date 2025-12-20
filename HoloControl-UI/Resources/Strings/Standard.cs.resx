@@ -270,4 +270,7 @@
     <value>Port</value>
     <comment>Title of the Port section</comment>
   </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>s</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:HoloControl.ViewModels"
              xmlns:converter="clr-namespace:HoloControl.Views.Xaml"
+             xmlns:loc="clr-namespace:HoloControl.Resources.Strings"
              x:Class="HoloControl.Views.Kiosk.MainPage"
              x:DataType="vm:KioskViewModel"
              Background="{StaticResource Black}">
@@ -66,13 +67,13 @@
                 </Style>
                 <x:Double x:Key="GradientOffsetOff">0.8</x:Double>
             </Grid.Resources>
-            <Label Text="Manual Mode"
+            <Label Text="{x:Static loc:Kiosk.Mode_Manual}"
                    FontSize="Header"
                    Grid.Row="1"
                    Grid.Column="1"
                    Grid.ColumnSpan="5"/>
 
-            <Button Text="Red Laser"
+            <Button Text="{x:Static loc:Kiosk.Toggle_Red}"
                     Command="{x:Binding ToggleRedCommand, Mode=OneTime}"
                     Grid.Row="3"
                     Grid.RowSpan="3"
@@ -84,7 +85,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Text="Green Laser"
+            <Button Text="{x:Static loc:Kiosk.Toggle_Green}"
                     Command="{x:Binding ToggleGreenCommand, Mode=OneTime}"
                     Grid.Row="7"
                     Grid.RowSpan="3"
@@ -96,7 +97,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Text="Blue Laser"
+            <Button Text="{x:Static loc:Kiosk.Toggle_Blue}"
                     Command="{x:Binding ToggleBlueCommand, Mode=OneTime}"
                     Grid.Row="3"
                     Grid.RowSpan="3"
@@ -108,7 +109,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Text="External Laser"
+            <Button Text="{x:Static loc:Kiosk.Toggle_External}"
                     Command="{x:Binding ToggleExternalCommand, Mode=OneTime}"
                     Grid.Row="7"
                     Grid.RowSpan="3"
@@ -120,7 +121,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Text="Finishing LED"
+            <Button Text="{x:Static loc:Kiosk.Toggle_Finishing}"
                     Command="{x:Binding ToggleFinishingCommand, Mode=OneTime}"
                     Grid.Row="5"
                     Grid.RowSpan="3"
@@ -175,15 +176,19 @@
                     <Setter Property="VerticalOptions" Value="Center" />
                     <Setter Property="MinimumWidthRequest" Value="120" />
                     <Setter Property="BackgroundColor" Value="{StaticResource Gray500}" />
+                    <Setter Property="IsEnabled" Value="{x:Binding IsRunning, Converter={StaticResource Negate}}" />
                 </Style>
                 <Style TargetType="Label" Class="TimingSetter">
                     <Setter Property="VerticalOptions" Value="Center" />
                     <Setter Property="Margin" Value="8,0" />
-                    <Setter Property="Text" Value="s" />
+                    <Setter Property="Text" Value="{x:Static loc:Standard.Seconds}" />
                     <Setter Property="TextColor" Value="{StaticResource Black}" />
                 </Style>
+                <Style TargetType="HorizontalStackLayout" Class="TimingSetter">
+                    <Setter Property="HorizontalOptions" Value="End" />
+                </Style>
             </Grid.Resources>
-            <Label Text="Automatic Mode"
+            <Label Text="{x:Static loc:Kiosk.Mode_Automatic}"
                    FontSize="Header"
                    Grid.Column="1"
                    Grid.ColumnSpan="6"
@@ -215,10 +220,11 @@
             <HorizontalStackLayout Grid.Column="1"
                                    Grid.Row="3">
                 <Image Source="timer.png" StyleClass="TimingLabel" />
-                <Label Text="Waiting Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_Waiting}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="3">
+                                   Grid.Row="3"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.WaitTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ewt" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
@@ -231,10 +237,11 @@
                     </LinearGradientBrush>
                 </HorizontalStackLayout.Background>
                 <Image Source="headlights.png" StyleClass="TimingLabel" />
-                <Label Text="Red Laser Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_Red}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="4">
+                                   Grid.Row="4"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.RedTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ert" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
@@ -247,10 +254,11 @@
                     </LinearGradientBrush>
                 </HorizontalStackLayout.Background>
                 <Image Source="headlights.png" StyleClass="TimingLabel" />
-                <Label Text="Green Laser Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_Green}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="5">
+                                   Grid.Row="5"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.GreenTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="egt" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
@@ -263,10 +271,11 @@
                     </LinearGradientBrush>
                 </HorizontalStackLayout.Background>
                 <Image Source="headlights.png" StyleClass="TimingLabel" />
-                <Label Text="Blue Laser Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_Blue}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="6">
+                                   Grid.Row="6"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.BlueTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ebt" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
@@ -279,10 +288,11 @@
                     </LinearGradientBrush>
                 </HorizontalStackLayout.Background>
                 <Image Source="headlights.png" StyleClass="TimingLabel" />
-                <Label Text="External Laser Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_External}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="7">
+                                   Grid.Row="7"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.ExternalTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="eet" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
@@ -295,15 +305,17 @@
                     </LinearGradientBrush>
                 </HorizontalStackLayout.Background>
                 <Image Source="sun.png" StyleClass="TimingLabel" />
-                <Label Text="Finishing Time" StyleClass="TimingLabel" />
+                <Label Text="{x:Static loc:Kiosk.Time_Finishing}" StyleClass="TimingLabel" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2"
-                                   Grid.Row="8">
+                                   Grid.Row="8"
+                                   StyleClass="TimingSetter">
                 <Entry Text="{x:Binding Timings.FinishingTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="eft" />
                 <Label StyleClass="TimingSetter" />
             </HorizontalStackLayout>
             <ImageButton BackgroundColor="{StaticResource Tertiary}"
                          Source="play.png"
+                         ToolTipProperties.Text="{x:Static loc:Kiosk.Actions_Start}"
                          Command="{x:Binding StartCommand, Mode=OneTime}"
                          Aspect="AspectFit"
                          Grid.Column="4"
@@ -312,6 +324,7 @@
                          Grid.RowSpan="6"/>
             <ImageButton BackgroundColor="{StaticResource Primary}"
                          Source="pause.png"
+                         ToolTipProperties.Text="{x:Static loc:Kiosk.Actions_Pause}"
                          Command="{x:Binding PauseCommand, Mode=OneTime}"
                          IsEnabled="{x:Binding IsRunning, Mode=OneWay}"
                          Aspect="AspectFit"
@@ -321,6 +334,7 @@
                          Grid.RowSpan="3"/>
             <ImageButton BackgroundColor="{StaticResource Gray600}"
                          Source="stop.png"
+                         ToolTipProperties.Text="{x:Static loc:Kiosk.Actions_Stop}"
                          Command="{x:Binding StopCommand, Mode=OneTime}"
                          IsEnabled="{x:Binding IsPaused, Mode=OneWay}"
                          Aspect="AspectFit"
@@ -340,7 +354,7 @@
                 <Shadow Brush="{StaticResource Black}"
                         Radius="40" />
             </HorizontalStackLayout.Shadow>
-            <Label Text="Port"
+            <Label Text="{x:Static loc:Standard.Port_Title}"
                    TextColor="{StaticResource White}"
                    VerticalOptions="Center"/>
             <Picker ItemsSource="{x:Binding Connection.AvailablePorts, Mode=OneWay}"
@@ -364,12 +378,14 @@
             <HorizontalStackLayout HorizontalOptions="Fill" Spacing="360">
                 <CheckBox IsChecked="{x:Binding IsOutputVisible, Mode=TwoWay}"
                           Color="{StaticResource Gray950}"
+                          ToolTipProperties.Text="{x:Static loc:Kiosk.Actions_ToggleHistory}"
                           VerticalOptions="Center" />
-                <Label Text="Output"
+                <Label Text="{x:Static loc:Kiosk.Output}"
                        VerticalOptions="Center"
                        TextColor="{StaticResource White}"
                        Margin="-360,0,32,0"/>
                 <ImageButton Source="broom.png"
+                             ToolTipProperties.Text="{x:Static loc:Standard.Console_Clear}"
                              Command="{x:Binding Clear, Mode=OneTime}"
                              BackgroundColor="Transparent"
                              IsEnabled="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}}"
@@ -393,10 +409,10 @@
                                Padding="32,8"
                                IsVisible="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}, ConverterParameter={StaticResource True}}">
             <Ellipse Fill="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusColor}}"
-             WidthRequest="12"
-             HeightRequest="12"
-             VerticalOptions="Center"
-             Margin="0,-2,0,0"/>
+                     WidthRequest="12"
+                     HeightRequest="12"
+                     VerticalOptions="Center"
+                     Margin="0,-2,0,0"/>
             <Label Text="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusName}}" Margin="8,0,0,0" VerticalOptions="Center" TextColor="White" />
         </HorizontalStackLayout>
     </Grid>

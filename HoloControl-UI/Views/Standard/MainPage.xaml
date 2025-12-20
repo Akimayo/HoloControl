@@ -61,7 +61,7 @@
                     <HorizontalStackLayout Grid.Column="2">
                         <Button Text="{x:Static loc:Standard.Port_Connect}" Command="{Binding Connect}" />
                         <ImageButton Source="broom.png"
-                                     SemanticProperties.Description="{x:Static loc:Standard.Console_Clear}" 
+                                     ToolTipProperties.Text="{x:Static loc:Standard.Console_Clear}"
                                      BackgroundColor="Transparent"
                                      IsEnabled="{x:Binding Connection.Status, Converter={StaticResource ConnectionStatusBoolean}}"
                                      Padding="12"
@@ -313,7 +313,7 @@
                         <HorizontalStackLayout Grid.Row="1">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry Text="{Binding Timings.WaitTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{Binding Timings.WaitString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
@@ -323,7 +323,7 @@
                         <HorizontalStackLayout Grid.Row="2">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry TextColor="DarkRed" Text="{x:Binding Timings.RedTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{x:Binding Timings.RedString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
@@ -333,7 +333,7 @@
                         <HorizontalStackLayout Grid.Row="3">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry TextColor="DarkGreen" Text="{x:Binding Timings.GreenTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{Binding Timings.GreenString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
@@ -343,7 +343,7 @@
                         <HorizontalStackLayout Grid.Row="4">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry TextColor="DarkBlue" Text="{x:Binding Timings.BlueTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{x:Binding Timings.BlueString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
@@ -353,7 +353,7 @@
                         <HorizontalStackLayout Grid.Row="5">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry TextColor="DarkGoldenrod" Text="{x:Binding Timings.ExternalTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{x:Binding Timings.ExternalString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
@@ -363,7 +363,7 @@
                         <HorizontalStackLayout Grid.Row="6">
                             <Label Text="{x:Static loc:Standard.Controls_Timing_Time}" />
                             <Entry TextColor="{StaticResource Secondary}" Text="{x:Binding Timings.FinishingTime, Mode=TwoWay}" />
-                            <Label Text="s" />
+                            <Label Text="{x:Static loc:Standard.Seconds}" />
                             <Label StyleClass="SpacerLabel" />
                             <Label Text="{x:Binding Timings.FinishingString, Mode=OneWay}" StyleClass="ResultLabel" />
                         </HorizontalStackLayout>
