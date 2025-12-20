@@ -8,10 +8,11 @@ namespace HoloControl.ViewModels
 {
     internal class KioskViewModel : RootViewModel
     {
-        private bool _isManualMode = true, _isRunning = false, _isPaused = false;
+        private bool _isManualMode = true, _isRunning = false, _isPaused = false, _isOutputVisible = true;
         public bool IsManualMode { get => this._isManualMode; private set { this._isManualMode = value; this.Update(); } }
         public bool IsRunning { get => this._isRunning; private set { this._isRunning = value; this.Update(); } }
         public bool IsPaused { get => this._isPaused; private set { this._isPaused = value; this.Update(); } }
+        public bool IsOutputVisible { get => this._isOutputVisible; set { this._isOutputVisible = value; this.Update(); } }
         private readonly IDispatcherTimer StatusCheckTimer = Dispatcher.GetForCurrentThread().CreateTimer();
         private readonly IDispatcherTimer ExpositionTimer = Dispatcher.GetForCurrentThread().CreateTimer();
         private readonly Stopwatch ExpositionStopwatch = new();

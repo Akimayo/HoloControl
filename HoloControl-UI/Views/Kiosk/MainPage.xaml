@@ -165,6 +165,10 @@
                                HeightRequest="64"
                                BackgroundColor="{StaticResource Blue100Accent}"
                                IsVisible="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}, ConverterParameter={StaticResource True}}">
+            <HorizontalStackLayout.Shadow>
+                <Shadow Brush="{StaticResource Black}"
+                        Radius="40" />
+            </HorizontalStackLayout.Shadow>
             <Label Text="Port"
                    TextColor="{StaticResource White}"
                    VerticalOptions="Center"/>
@@ -182,16 +186,26 @@
                              Grid.Row="1"
                              Padding="16,16,0,0"
                              BackgroundColor="{StaticResource Gray900}">
+            <VerticalStackLayout.Shadow>
+                <Shadow Brush="{StaticResource Black}"
+                        Radius="40" />
+            </VerticalStackLayout.Shadow>
             <HorizontalStackLayout HorizontalOptions="Fill" Spacing="360">
+                <CheckBox IsChecked="{x:Binding IsOutputVisible, Mode=TwoWay}"
+                          Color="{StaticResource Gray950}"
+                          VerticalOptions="Center" />
                 <Label Text="Output"
-                   TextColor="{StaticResource White}" />
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource White}"
+                       Margin="-360,0,0,0"/>
                 <ImageButton Source="broom.png"
                              Command="{x:Binding Clear, Mode=OneTime}"
                              BackgroundColor="Transparent"
                              IsEnabled="{x:Binding Connection.Status, Mode=OneWay, Converter={StaticResource ConnectionStatus}}"
                              Padding="12"
                              Margin="24,-12,0,0"
-                             HeightRequest="12"/>
+                             HeightRequest="12"
+                             IsVisible="{x:Binding IsOutputVisible, Mode=OneWay}"/>
             </HorizontalStackLayout>
             <Editor Text="{x:Binding History, Mode=OneWay}"
                     IsReadOnly="True"
@@ -199,6 +213,7 @@
                     FontFamily="B612 Mono"
                     HeightRequest="120"
                     WidthRequest="480"
+                    IsVisible="{x:Binding IsOutputVisible, Mode=OneWay}"
                     x:Name="History" />
         </VerticalStackLayout>
         <HorizontalStackLayout Grid.Column="2"
