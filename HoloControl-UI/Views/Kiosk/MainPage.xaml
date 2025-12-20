@@ -139,24 +139,195 @@
               IsVisible="{x:Binding IsManualMode, Mode=OneWay, Converter={StaticResource Negate}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="11*" />
+                <ColumnDefinition Width="2.5*" />
+                <ColumnDefinition Width="1.6*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="7*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Image" Class="TimingLabel">
+                    <Setter Property="WidthRequest" Value="24" />
+                    <Setter Property="HeightRequest" Value="24" />
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="Margin" Value="24,0,16,0" />
+                </Style>
+                <Style TargetType="Label" Class="TimingLabel">
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="FontSize" Value="Medium" />
+                    <Setter Property="TextColor" Value="{StaticResource Black}" />
+                </Style>
+                <Style TargetType="Entry" Class="TimingSetter">
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="MinimumWidthRequest" Value="120" />
+                    <Setter Property="BackgroundColor" Value="{StaticResource Gray500}" />
+                </Style>
+                <Style TargetType="Label" Class="TimingSetter">
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="Margin" Value="8,0" />
+                    <Setter Property="Text" Value="s" />
+                    <Setter Property="TextColor" Value="{StaticResource Black}" />
+                </Style>
+            </Grid.Resources>
             <Label Text="Automatic Mode"
                    FontSize="Header"
                    Grid.Column="1"
-                   Grid.ColumnSpan="1"
+                   Grid.ColumnSpan="6"
                    Grid.Row="1" />
-            <Label Text="Kiosk mode is not yet implemented for Automatic Mode"
-                   Grid.Column="1"
-                   Grid.Row="3" />
+            <ProgressBar IsVisible="True"
+                         Progress="{x:Binding RemainingFraction}"
+                         BackgroundColor="{StaticResource Red300Accent}"
+                         ProgressColor="{StaticResource Tertiary}"
+                         Grid.Column="1"
+                         Grid.ColumnSpan="6"
+                         Grid.Row="2"
+                         Margin="0,8"
+                         VerticalOptions="End"
+                         HorizontalOptions="Fill" />
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.ColumnSpan="6"
+                                   Grid.Row="2"
+                                   Margin="0,12"
+                                   VerticalOptions="End"
+                                   HorizontalOptions="Center">
+                <Image Source="timer_white.png" HeightRequest="24" Margin="8,0" Opacity="0.6" />
+                <Label Text="{x:Binding RemainingTime, Mode=OneWay}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Border BackgroundColor="{StaticResource Gray600}"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3"
+                    Grid.RowSpan="6"/>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="3">
+                <Image Source="timer.png" StyleClass="TimingLabel" />
+                <Label Text="Waiting Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="3">
+                <Entry Text="{x:Binding Timings.WaitTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ewt" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="4">
+                <HorizontalStackLayout.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="Red" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.1" />
+                    </LinearGradientBrush>
+                </HorizontalStackLayout.Background>
+                <Image Source="headlights.png" StyleClass="TimingLabel" />
+                <Label Text="Red Laser Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="4">
+                <Entry Text="{x:Binding Timings.RedTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ert" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="5">
+                <HorizontalStackLayout.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="Green" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.1" />
+                    </LinearGradientBrush>
+                </HorizontalStackLayout.Background>
+                <Image Source="headlights.png" StyleClass="TimingLabel" />
+                <Label Text="Green Laser Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="5">
+                <Entry Text="{x:Binding Timings.GreenTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="egt" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="6">
+                <HorizontalStackLayout.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="Blue" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.1" />
+                    </LinearGradientBrush>
+                </HorizontalStackLayout.Background>
+                <Image Source="headlights.png" StyleClass="TimingLabel" />
+                <Label Text="Blue Laser Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="6">
+                <Entry Text="{x:Binding Timings.BlueTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="ebt" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="7">
+                <HorizontalStackLayout.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="Goldenrod" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.1" />
+                    </LinearGradientBrush>
+                </HorizontalStackLayout.Background>
+                <Image Source="headlights.png" StyleClass="TimingLabel" />
+                <Label Text="External Laser Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="7">
+                <Entry Text="{x:Binding Timings.ExternalTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="eet" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="8">
+                <HorizontalStackLayout.Background>
+                    <LinearGradientBrush EndPoint="1,0">
+                        <GradientStop Color="LightBlue" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.1" />
+                    </LinearGradientBrush>
+                </HorizontalStackLayout.Background>
+                <Image Source="sun.png" StyleClass="TimingLabel" />
+                <Label Text="Finishing Time" StyleClass="TimingLabel" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2"
+                                   Grid.Row="8">
+                <Entry Text="{x:Binding Timings.FinishingTime, Mode=TwoWay}" StyleClass="TimingSetter" x:Name="eft" />
+                <Label StyleClass="TimingSetter" />
+            </HorizontalStackLayout>
+            <ImageButton BackgroundColor="{StaticResource Tertiary}"
+                         Source="play.png"
+                         Command="{x:Binding StartCommand, Mode=OneTime}"
+                         Aspect="AspectFit"
+                         Grid.Column="4"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="3"
+                         Grid.RowSpan="6"/>
+            <ImageButton BackgroundColor="{StaticResource Primary}"
+                         Source="pause.png"
+                         Command="{x:Binding PauseCommand, Mode=OneTime}"
+                         IsEnabled="{x:Binding IsRunning, Mode=OneWay}"
+                         Aspect="AspectFit"
+                         Margin="32"
+                         Grid.Column="6"
+                         Grid.Row="3"
+                         Grid.RowSpan="3"/>
+            <ImageButton BackgroundColor="{StaticResource Gray600}"
+                         Source="stop.png"
+                         Command="{x:Binding StopCommand, Mode=OneTime}"
+                         IsEnabled="{x:Binding IsPaused, Mode=OneWay}"
+                         Aspect="AspectFit"
+                         Margin="32"
+                         Grid.Column="6"
+                         Grid.Row="6"
+                         Grid.RowSpan="3"/>
         </Grid>
         <HorizontalStackLayout Grid.Row="1"
                                Spacing="16"
@@ -197,7 +368,7 @@
                 <Label Text="Output"
                        VerticalOptions="Center"
                        TextColor="{StaticResource White}"
-                       Margin="-360,0,0,0"/>
+                       Margin="-360,0,32,0"/>
                 <ImageButton Source="broom.png"
                              Command="{x:Binding Clear, Mode=OneTime}"
                              BackgroundColor="Transparent"

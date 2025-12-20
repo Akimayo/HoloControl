@@ -17,6 +17,10 @@ namespace HoloControl.ViewModels
         private readonly IDispatcherTimer ExpositionTimer = Dispatcher.GetForCurrentThread().CreateTimer();
         private readonly Stopwatch ExpositionStopwatch = new();
 
+        private TimeSpan _totalTime, _remainingTime;
+        public TimeSpan RemainingTime { get => this._remainingTime; set { this._remainingTime = value; this.Update(); this.Update(nameof(this.RemainingFraction)); }  }
+        public double RemainingFraction => 1 - (this._remainingTime / this._totalTime);
+
         #region Commands
         public ICommand ToggleRedCommand { get; }
         public ICommand ToggleGreenCommand { get; }
@@ -42,6 +46,7 @@ namespace HoloControl.ViewModels
                 this.ExpositionStopwatch.Stop();
                 this.ExpositionStopwatch.Reset();
             };
+            this.Timings.PropertyChanged += OnTimingsChanged;
 
             this.ToggleRedCommand = new RelayCommand(() => { this.Colors.Red = !this.Colors.Red; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
             this.ToggleGreenCommand = new RelayCommand(() => { this.Colors.Green = !this.Colors.Green; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
@@ -59,7 +64,6 @@ namespace HoloControl.ViewModels
                 this.IsRunning = true;
                 this.IsPaused = false;
                 this.ExecuteSimpleCommand("18000000");
-                this.SendCommands();
                 this.ExpositionTimer.Start();
                 this.ExpositionStopwatch.Restart();
             });
@@ -68,7 +72,6 @@ namespace HoloControl.ViewModels
                 this.IsRunning = false;
                 this.IsPaused = true;
                 this.ExecuteSimpleCommand("19000000");
-                this.SendCommands();
                 this.ExpositionTimer.Stop();
                 this.ExpositionStopwatch.Stop();
             });
@@ -77,11 +80,23 @@ namespace HoloControl.ViewModels
                 this.IsRunning = false;
                 this.IsPaused = false;
                 this.ExecuteSimpleCommand("1A000000");
-                this.SendCommands();
                 this.ExpositionTimer.Stop();
                 this.ExpositionStopwatch.Stop();
                 this.ExpositionStopwatch.Reset();
             });
+        }
+
+        protected override void ExecuteSimpleCommand(string parameter)
+        {
+            base.ExecuteSimpleCommand(parameter);
+            this.SendCommands();
+        }
+
+        private void OnTimingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this._totalTime = this.RemainingTime = TimeSpan.FromSeconds(this.Timings.GetTotalTime());
+            if (this.CanSend() && e.PropertyName.EndsWith("String"))
+                this.ExecuteTimingCommand(e.PropertyName[..^6]);
         }
 
         private bool colorsRequested = false, timingsRequested = false;
@@ -96,8 +111,21 @@ namespace HoloControl.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(r)) continue;
                 int c = r.IndexOf(':');
-                if (r[(c - KWD_STATUS.Length)..c] == KWD_STATUS)
+                if (c < 0)
                 {
+                    // An error message was received, open the output to show to user
+                    this.IsOutputVisible = true;
+                    this.AddToHistory(r);
+                    this.IsRunning = false;
+                    this.IsPaused = false;
+                    this.ExpositionTimer.Stop();
+                    this.ExpositionStopwatch.Stop();
+                    this.ExpositionStopwatch.Reset();
+                }
+                else if (r[(c - KWD_STATUS.Length)..c] == KWD_STATUS)
+                {
+                    if (c + 2 >= r.Length) continue; // Skip this block if the status is unset
+
                     bool isManualMode = r[(c + 2)..^1] == "manual";
 
                     // When the board is switched to a new mode and we are learning of the change now, `isManualMode != this.IsManualMode` in the first pass.
@@ -163,11 +191,8 @@ namespace HoloControl.ViewModels
                             break;
                     }
                     // Unless the check was requested automatically during mode change, add  the response to history
-                    if (!this.timingsRequested)
-                    {
-                        this.AddToHistory(r);
-                        processedRequestedTimings = true;
-                    }
+                    if (!this.timingsRequested) this.AddToHistory(r);
+                    else processedRequestedTimings = true;
                 }
                 else this.AddToHistory(r + " (parsing failed)"); // Fallback when parsing fails
             }
@@ -177,8 +202,12 @@ namespace HoloControl.ViewModels
         }
 
         private void CheckModeStatus(object sender, EventArgs e)
+        {
             // Send the "Get Mode" command, response handled by ParseResponse(...). This call does not add anything to history.
-            => this.Connection.SendString("13000000");
+            this.Connection.SendString("13000000");
+            // If the exposition is running, update the displayed remaining time
+            if (this.IsRunning) this.RemainingTime = TimeSpan.FromSeconds(this.Timings.GetTotalTime()) - this.ExpositionStopwatch.Elapsed;
+        }
 
         private void ConnectionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -192,6 +221,11 @@ namespace HoloControl.ViewModels
                         break;
                     default:
                         this.StatusCheckTimer.Stop();
+                        this.IsRunning = false;
+                        this.IsPaused = false;
+                        this.ExpositionTimer.Stop();
+                        this.ExpositionStopwatch.Stop();
+                        this.ExpositionStopwatch.Reset();
                         break;
                 }
             }

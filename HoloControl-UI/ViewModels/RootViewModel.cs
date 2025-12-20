@@ -57,7 +57,7 @@ namespace HoloControl.ViewModels
             this.Clear = new RelayCommand(() => { this.HistoryList.Clear(); this.History = ""; }, this.CanSend);
         }
 
-        protected void ExecuteSimpleCommand(string parameter)
+        protected virtual void ExecuteSimpleCommand(string parameter)
         {
             this.CurrentCommand += parameter + " ";
         }

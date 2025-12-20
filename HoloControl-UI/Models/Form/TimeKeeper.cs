@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace HoloControl.Models.Form
 {
@@ -29,17 +28,17 @@ namespace HoloControl.Models.Form
 
         private string TimeToHex(byte index) => instr[index] + Convert.ToString((int)(this.state[index] * 1000), 16).PadLeft(6, '0');
 
-        public float WaitTime { get => this.state[0]; set { this.state[0] = value; this.Update(WAIT); } }
+        public float WaitTime { get => this.state[0]; set { if (this.state[0] != value) { this.state[0] = value; this.Update(WAIT); } } }
         public string WaitString => "0x" + TimeToHex(0);
-        public float RedTime { get => this.state[1]; set { this.state[1] = value; this.Update(RED); } }
+        public float RedTime { get => this.state[1]; set { if (this.state[1] != value) { this.state[1] = value; this.Update(RED); } } }
         public string RedString => "0x" + TimeToHex(1);
-        public float GreenTime { get => this.state[2]; set { this.state[2] = value; this.Update(GREEN); } }
+        public float GreenTime { get => this.state[2]; set { if (this.state[2] != value) { this.state[2] = value; this.Update(GREEN); } } }
         public string GreenString => "0x" + TimeToHex(2);
-        public float BlueTime { get => this.state[3]; set { this.state[3] = value; this.Update(BLUE); } }
+        public float BlueTime { get => this.state[3]; set { if (this.state[3] != value) { this.state[3] = value; this.Update(BLUE); } } }
         public string BlueString => "0x" + TimeToHex(3);
-        public float ExternalTime { get => this.state[4]; set { this.state[4] = value; this.Update(EXTERNAL); } }
+        public float ExternalTime { get => this.state[4]; set { if (this.state[4] != value) { this.state[4] = value; this.Update(EXTERNAL); } } }
         public string ExternalString => "0x" + TimeToHex(4);
-        public float FinishingTime { get => this.state[5]; set { this.state[5] = value; this.Update(FINISHING); } }
+        public float FinishingTime { get => this.state[5]; set { if (this.state[5] != value) { this.state[5] = value; this.Update(FINISHING); } } }
         public string FinishingString => "0x" + TimeToHex(5);
 
         public void Reset()
