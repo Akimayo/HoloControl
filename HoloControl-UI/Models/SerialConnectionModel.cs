@@ -93,7 +93,7 @@ namespace HoloControl.Models
             if (this.SerialReader != null)
             {
                 this.ReaderCancellation.Cancel();
-                if (!this.SerialReader.IsCanceled) this.SerialReader.Wait();
+                //if (!this.SerialReader.IsCanceled) this.SerialReader.Wait();
                 if (this.SerialReader.IsCompleted) this.SerialReader.Dispose();
             }
             if (this.OpenPort != null)
