@@ -18,8 +18,8 @@ namespace HoloControl.ViewModels
         private readonly Stopwatch ExpositionStopwatch = new();
 
         private TimeSpan _totalTime, _remainingTime;
-        public TimeSpan RemainingTime { get => this._remainingTime; set { this._remainingTime = value; this.Update(); this.Update(nameof(this.RemainingFraction)); }  }
-        public double RemainingFraction => 1 - (this._remainingTime / this._totalTime);
+        public TimeSpan RemainingTime { get => this._remainingTime; set { this._remainingTime = value; this.Update(); this.Update(nameof(this.RemainingFraction)); } }
+        public double RemainingFraction => this._totalTime.TotalSeconds > 0 ? 1 - (this._remainingTime / this._totalTime) : 0;
 
         #region Commands
         public ICommand ToggleRedCommand { get; }
