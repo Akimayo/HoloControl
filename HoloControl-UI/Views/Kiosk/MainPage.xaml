@@ -14,6 +14,7 @@
         <converter:ConnectionStatusNameConverter x:Key="ConnectionStatusName" />
         <converter:ConnectionStatusColorConverter x:Key="ConnectionStatusColor" />
         <converter:BooleanGradientConverter x:Key="Gradient" />
+        <converter:TimeSpanFormatConverter x:Key="TimeFormat" />
         <x:Boolean x:Key="True">True</x:Boolean>
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="B612" />
@@ -176,7 +177,8 @@
                     <Setter Property="VerticalOptions" Value="Center" />
                     <Setter Property="MinimumWidthRequest" Value="120" />
                     <Setter Property="BackgroundColor" Value="{StaticResource Gray500}" />
-                    <Setter Property="IsEnabled" Value="{x:Binding IsRunning, Converter={StaticResource Negate}}" />
+                    <Setter Property="IsEnabled" Value="{x:Binding IsRunning, Mode=OneWay, Converter={StaticResource Negate}}" />
+                    <Setter Property="IsReadOnly" Value="{x:Binding IsRunning, Mode=OneWay}" />
                 </Style>
                 <Style TargetType="Label" Class="TimingSetter">
                     <Setter Property="VerticalOptions" Value="Center" />
@@ -187,6 +189,20 @@
                 <Style TargetType="HorizontalStackLayout" Class="TimingSetter">
                     <Setter Property="HorizontalOptions" Value="End" />
                 </Style>
+                <Style TargetType="ProgressBar">
+                    <Setter Property="BackgroundColor" Value="{StaticResource Gray600}" />
+                    <Setter Property="ProgressColor" Value="{StaticResource Gray900}" />
+                    <Style.Triggers>
+                        <DataTrigger TargetType="ProgressBar" Binding="{x:Binding IsRunning, Mode=OneWay}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Red300Accent}" />
+                            <Setter Property="ProgressColor" Value="{StaticResource Tertiary}" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ProgressBar" Binding="{x:Binding IsPaused, Mode=OneWay}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource Orange300Accent}" />
+                            <Setter Property="ProgressColor" Value="{StaticResource Primary}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
             </Grid.Resources>
             <Label Text="{x:Static loc:Kiosk.Mode_Automatic}"
                    FontSize="Header"
@@ -195,8 +211,6 @@
                    Grid.Row="1" />
             <ProgressBar IsVisible="True"
                          Progress="{x:Binding RemainingFraction}"
-                         BackgroundColor="{StaticResource Red300Accent}"
-                         ProgressColor="{StaticResource Tertiary}"
                          Grid.Column="1"
                          Grid.ColumnSpan="6"
                          Grid.Row="2"
@@ -210,7 +224,7 @@
                                    VerticalOptions="End"
                                    HorizontalOptions="Center">
                 <Image Source="timer_white.png" HeightRequest="24" Margin="8,0" Opacity="0.6" />
-                <Label Text="{x:Binding RemainingTime, Mode=OneWay}" VerticalOptions="Center" />
+                <Label Text="{x:Binding RemainingTime, Mode=OneWay, Converter={x:StaticResource TimeFormat}}" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <Border BackgroundColor="{StaticResource Gray600}"
                     Grid.Column="1"
@@ -317,6 +331,7 @@
                          Source="play.png"
                          ToolTipProperties.Text="{x:Static loc:Kiosk.Actions_Start}"
                          Command="{x:Binding StartCommand, Mode=OneTime}"
+                         IsEnabled="{x:Binding IsRunning, Mode=OneWay, Converter={StaticResource Negate}}"
                          Aspect="AspectFit"
                          Grid.Column="4"
                          Grid.ColumnSpan="2"

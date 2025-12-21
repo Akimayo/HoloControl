@@ -13,6 +13,7 @@ namespace HoloControl.ViewModels
         public bool IsRunning { get => this._isRunning; private set { this._isRunning = value; this.Update(); } }
         public bool IsPaused { get => this._isPaused; private set { this._isPaused = value; this.Update(); } }
         public bool IsOutputVisible { get => this._isOutputVisible; set { this._isOutputVisible = value; this.Update(); } }
+
         private readonly IDispatcherTimer StatusCheckTimer = Dispatcher.GetForCurrentThread().CreateTimer();
         private readonly IDispatcherTimer ExpositionTimer = Dispatcher.GetForCurrentThread().CreateTimer();
         private readonly Stopwatch ExpositionStopwatch = new();
@@ -40,58 +41,70 @@ namespace HoloControl.ViewModels
             this.StatusCheckTimer.Interval = TimeSpan.FromSeconds(1);
             this.StatusCheckTimer.Tick += CheckModeStatus;
             this.ExpositionTimer.IsRepeating = false;
-            this.ExpositionTimer.Tick += (s, e) =>
-            {
-                this.IsRunning = false;
-                this.ExpositionStopwatch.Stop();
-                this.ExpositionStopwatch.Reset();
-            };
+            this.ExpositionTimer.Tick += OnExpositionEnded;
             this.Timings.PropertyChanged += OnTimingsChanged;
 
-            this.ToggleRedCommand = new RelayCommand(() => { this.Colors.Red = !this.Colors.Red; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
-            this.ToggleGreenCommand = new RelayCommand(() => { this.Colors.Green = !this.Colors.Green; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
-            this.ToggleBlueCommand = new RelayCommand(() => { this.Colors.Blue = !this.Colors.Blue; this.ExectuteToggleCommand(ColorKeeper.RGB); this.SendCommands(); }, this.CanSend);
-            this.ToggleExternalCommand = new RelayCommand(() => { this.Colors.External = !this.Colors.External; this.ExectuteToggleCommand(ColorKeeper.EXTERNAL); this.SendCommands(); }, this.CanSend);
-            this.ToggleFinishingCommand = new RelayCommand(() => { this.Colors.Finishing = !this.Colors.Finishing; this.ExectuteToggleCommand(ColorKeeper.FINISHING); this.SendCommands(); }, this.CanSend);
-            this.StartCommand = new RelayCommand(() =>
-            {
-                if (this.IsPaused)
-                    // If the exposition has been paused, subtract the already elapsed time from total and tack on waiting time
-                    this.ExpositionTimer.Interval = this.ExpositionTimer.Interval - this.ExpositionStopwatch.Elapsed + TimeSpan.FromSeconds(this.Timings.WaitTime);
-                else
-                    // If this is a fresh exposure, set the total time needed for the exposure
-                    this.ExpositionTimer.Interval = TimeSpan.FromSeconds(this.Timings.GetTotalTime());
-                this.IsRunning = true;
-                this.IsPaused = false;
-                this.ExecuteSimpleCommand("18000000");
-                this.ExpositionTimer.Start();
-                this.ExpositionStopwatch.Restart();
-            });
-            this.PauseCommand = new RelayCommand(() =>
-            {
-                this.IsRunning = false;
-                this.IsPaused = true;
-                this.ExecuteSimpleCommand("19000000");
-                this.ExpositionTimer.Stop();
-                this.ExpositionStopwatch.Stop();
-            });
-            this.StopCommand = new RelayCommand(() =>
-            {
-                this.IsRunning = false;
-                this.IsPaused = false;
-                this.ExecuteSimpleCommand("1A000000");
-                this.ExpositionTimer.Stop();
-                this.ExpositionStopwatch.Stop();
-                this.ExpositionStopwatch.Reset();
-            });
+            this.ToggleRedCommand = new RelayCommand(() => { this.Colors.Red = !this.Colors.Red; this.ExectuteToggleCommand(ColorKeeper.RGB); }, this.CanSend);
+            this.ToggleGreenCommand = new RelayCommand(() => { this.Colors.Green = !this.Colors.Green; this.ExectuteToggleCommand(ColorKeeper.RGB); }, this.CanSend);
+            this.ToggleBlueCommand = new RelayCommand(() => { this.Colors.Blue = !this.Colors.Blue; this.ExectuteToggleCommand(ColorKeeper.RGB); }, this.CanSend);
+            this.ToggleExternalCommand = new RelayCommand(() => { this.Colors.External = !this.Colors.External; this.ExectuteToggleCommand(ColorKeeper.EXTERNAL); }, this.CanSend);
+            this.ToggleFinishingCommand = new RelayCommand(() => { this.Colors.Finishing = !this.Colors.Finishing; this.ExectuteToggleCommand(ColorKeeper.FINISHING); }, this.CanSend);
+            this.StartCommand = new RelayCommand(this.StartExposition, this.CanSend);
+            this.PauseCommand = new RelayCommand(this.PauseExposition, this.CanSend);
+            this.StopCommand = new RelayCommand(this.StopExposition, this.CanSend);
         }
 
+        #region Command Handlers
         protected override void ExecuteSimpleCommand(string parameter)
         {
             base.ExecuteSimpleCommand(parameter);
             this.SendCommands();
         }
+        private void StartExposition()
+        {
+            if (this.IsRunning) return;
+            if (this.IsPaused)
+            {
+                // If the exposition has been paused, subtract the already elapsed time from total and tack on waiting time
+                this._totalTime += TimeSpan.FromSeconds(this.Timings.WaitTime);
+                this.ExpositionTimer.Interval = this.RemainingTime = this._totalTime - this.ExpositionStopwatch.Elapsed;
+            }
+            else
+                // If this is a fresh exposure, set the total time needed for the exposure
+                this.ExpositionTimer.Interval = this.RemainingTime = this._totalTime = TimeSpan.FromSeconds(this.Timings.GetTotalTime());
+            this.IsRunning = true;
+            this.IsPaused = false;
+            this.ExecuteSimpleCommand("18000000");
+            this.ExpositionTimer.Start();
+            this.ExpositionStopwatch.Start();
+        }
+        private void PauseExposition()
+        {
+            this.IsRunning = false;
+            this.IsPaused = true;
+            this.ExecuteSimpleCommand("19000000");
+            this.ExpositionTimer.Stop();
+            this.ExpositionStopwatch.Stop();
+        }
+        private void StopExposition()
+        {
+            this.IsRunning = false;
+            this.IsPaused = false;
+            this.RemainingTime = this._totalTime;
+            this.ExecuteSimpleCommand("1A000000");
+            this.ExpositionTimer.Stop();
+            this.ExpositionStopwatch.Stop();
+            this.ExpositionStopwatch.Reset();
+        }
+        #endregion
 
+        private void OnExpositionEnded(object sender, EventArgs e)
+        {
+            this.IsRunning = false;
+            this.RemainingTime = TimeSpan.FromSeconds(0); // Make sure the progress bar ends on 100 %
+            this.ExpositionStopwatch.Stop();
+            this.ExpositionStopwatch.Reset();
+        }
         private void OnTimingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             this._totalTime = this.RemainingTime = TimeSpan.FromSeconds(this.Timings.GetTotalTime());
@@ -113,14 +126,20 @@ namespace HoloControl.ViewModels
                 int c = r.IndexOf(':');
                 if (c < 0)
                 {
-                    // An error message was received, open the output to show to user
-                    this.IsOutputVisible = true;
-                    this.AddToHistory(r);
-                    this.IsRunning = false;
-                    this.IsPaused = false;
-                    this.ExpositionTimer.Stop();
-                    this.ExpositionStopwatch.Stop();
-                    this.ExpositionStopwatch.Reset();
+                    if (r.Contains("  Exposure"))
+                        // Exposure start/re-start/pause/stop
+                        this.AddToHistory(r);
+                    else
+                    {
+                        // An error message was received, open the output to show to user
+                        this.IsOutputVisible = true;
+                        this.AddToHistory(r);
+                        this.IsRunning = false;
+                        this.IsPaused = false;
+                        this.ExpositionTimer.Stop();
+                        this.ExpositionStopwatch.Stop();
+                        this.ExpositionStopwatch.Reset();
+                    }
                 }
                 else if (r[(c - KWD_STATUS.Length)..c] == KWD_STATUS)
                 {
@@ -206,7 +225,7 @@ namespace HoloControl.ViewModels
             // Send the "Get Mode" command, response handled by ParseResponse(...). This call does not add anything to history.
             this.Connection.SendString("13000000");
             // If the exposition is running, update the displayed remaining time
-            if (this.IsRunning) this.RemainingTime = TimeSpan.FromSeconds(this.Timings.GetTotalTime()) - this.ExpositionStopwatch.Elapsed;
+            if (this.IsRunning) this.RemainingTime = this._totalTime - this.ExpositionStopwatch.Elapsed;
         }
 
         private void ConnectionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

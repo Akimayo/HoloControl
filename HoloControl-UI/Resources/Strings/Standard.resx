@@ -245,6 +245,14 @@
     <value>Set Wait Time</value>
     <comment>Button to set wait time</comment>
   </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hrs</value>
+    <comment>Shortcut for hours, unit of time</comment>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>m</value>
+    <comment>Shortcut for minutes, unit of time</comment>
+  </data>
   <data name="Port.Connect" xml:space="preserve">
     <value>Connect</value>
     <comment>Button to connect to the port</comment>

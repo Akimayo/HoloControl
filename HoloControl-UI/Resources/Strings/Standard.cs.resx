@@ -242,6 +242,12 @@
     <value>Nastavit dobu čekání</value>
     <comment>Button to set wait time</comment>
   </data>
+  <data name="Hours" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>m</value>
+  </data>
   <data name="Port.Connect" xml:space="preserve">
     <value>Připojit</value>
     <comment>Button to connect to the port</comment>

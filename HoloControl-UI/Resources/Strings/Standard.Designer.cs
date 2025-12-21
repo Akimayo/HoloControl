@@ -349,6 +349,24 @@ namespace HoloControl.Resources.Strings {
         }
         
         /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný hrs.
+        /// </summary>
+        internal static string Hours {
+            get {
+                return ResourceManager.GetString("Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný m.
+        /// </summary>
+        internal static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledá lokalizovaný řetězec podobný Connect.
         /// </summary>
         internal static string Port_Connect {
